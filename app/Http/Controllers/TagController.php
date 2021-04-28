@@ -37,15 +37,9 @@ class TagController extends Controller
     {
         $request->validate([
             'name' => 'bail|required|string|unique:tags,name',
-            'nsfw' => '',
         ]);
 
         $tag = Tag::make($request->only(['name'],));
-
-        if ($request->boolean('nsfw')) {
-            $tag->nsfw = true;
-        }
-
         $tag->save();
 
         return redirect()->back()->with('status', successMsg('Tag created successfully.'));

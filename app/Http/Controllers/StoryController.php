@@ -58,15 +58,9 @@ class StoryController extends Controller
                 Rule::in(fandoms())
             ],
             'link' => 'nullable',
-            'nsfw' => '',
         ]);
 
         $story = Story::make($validated);
-
-        if ($request->boolean('nsfw')) {
-            $story->nsfw = true;
-        }
-
         $story->save();
 
         // logar atividade
@@ -129,12 +123,7 @@ class StoryController extends Controller
                 Rule::in(fandoms())
             ],
             'link' => '',
-            'nsfw' => '',
         ]);
-
-        // $story->update(array_merge($validated, [
-        //     'nsfw' => $request->boolean('nsfw')
-        // ]));
 
         $story->update($validated);
 

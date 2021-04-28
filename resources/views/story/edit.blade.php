@@ -37,15 +37,6 @@
                 {{-- <x-form-item class="w-full" name="fandom" required autocomplete>Fandom</x-form-item> --}}
                 <x-form-item class="w-full" name="link_sb" autocomplete>Link</x-form-item>
             </div>
-            <div class="flex items-start mt-2">
-                <div class="flex items-center h-5">
-                    <input id="nsfw" name="nsfw" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                </div>
-                <div class="ml-3 text-sm">
-                    <label for="nsfw" class="font-medium text-gray-700">NSFW</label>
-                    <p class="text-gray-500">Does it contain adult content?</p>
-                </div>
-            </div>
             <x-button class="mt-2">
                 {{ __('Confirm') }}
             </x-button>

@@ -19,15 +19,6 @@ class StorySeeder extends Seeder
             'author' => 'LacksCreativity',
             'fandom' => 'worm',
         ]);
-	
-	/* nsfw
-	Story::create([
-		'title' => 'The Seductive Spider-Harem',
-		'author' => 'Rubicon',
-		'fandom' => 'Spider-Man',
-		'nsfw' => true,
-		'type' => 'adventure',
-	]);
-	 */
+
     }
 }

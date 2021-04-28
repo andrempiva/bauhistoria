@@ -12,7 +12,6 @@ class Tag extends Model
     private $fillable = [
         'name',
         'parent_id',
-        'nsfw',
         'rating',
     ];
 }

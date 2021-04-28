@@ -17,7 +17,6 @@ class CreateTagsTable extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('parent_id')->nullable();
-            $table->boolean('nsfw')->default(false);
             // confidence score of the tag
             $table->integer('rating')->default(0);
             $table->timestamps();

@@ -38,8 +38,6 @@ class CreateStoriesTable extends Migration
             $table->unsignedInteger('words')->nullable();
             // chapter count
             $table->unsignedSmallInteger('chapters')->nullable();
-            // is it nsfw
-            $table->boolean('nsfw')->default(false);
             // its a sequel of
             $table->foreignIdFor(Story::class, 'sequel_of')->nullable();
             // its a prequel of

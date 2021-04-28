@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Story extends Model
 {
@@ -20,7 +21,6 @@ class Story extends Model
         'status',
         'words',
         'chapters',
-        'nsfw',
         'link',
         // 'link_sv',
         // 'link_ff',
@@ -61,11 +61,12 @@ class Story extends Model
         ])->using(StoryUser::class);
     }
 
-    public function setNsfwAttribute($value) {
-        $this->attributes['nsfw'] = ($value=='on');
-    }
-
     public function getScoreAttribute() {
         return $this->readers()->wherePivotNull('rating')->withSum('stories','user_story.rating')->select('rating')->get();
+    }
+
+    public function setTitleAttribute($value) {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
     }
 }
