@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoryUserTable extends Migration
+class CreateListedsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreateStoryUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('story_user', function (Blueprint $table) {
+        Schema::create('listeds', function (Blueprint $table) {
             // $table->id();
             $table->foreignIdFor(Story::class, 'story_id');
             $table->foreignIdFor(User::class, 'user_id');
@@ -23,8 +23,6 @@ class CreateStoryUserTable extends Migration
             $table->unsignedTinyInteger('rating')->nullable();
             $table->unsignedInteger('progress')->nullable();
             $table->boolean('favorited')->default(false);
-            $table->string('shiny')->nullable();
-            $table->string('feels')->nullable();
             $table->timestamps();
             $table->primary(['story_id', 'user_id']);
         });

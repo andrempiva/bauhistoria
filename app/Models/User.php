@@ -50,7 +50,7 @@ class User extends Authenticatable
             'favorited',
             'shiny',
             'feels',
-        ])->using(StoryUser::class);
+        ])->using(Listed::class);
     }
 
     public static function storyToListing($story) {

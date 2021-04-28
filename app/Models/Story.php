@@ -58,7 +58,7 @@ class Story extends Model
             'favorited',
             'shiny',
             'feels',
-        ])->using(StoryUser::class);
+        ])->using(Listed::class);
     }
 
     public function getScoreAttribute() {

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class StoryUser extends Pivot
+class Listed extends Pivot
 {
     // foreignIdFor Story::class 'story_id'
     // foreignIdFor User::class 'user_id'
