@@ -44,7 +44,7 @@
                                             class="p-0 text-xs"
                                         >
                                             <option {{ $listedData['rating'] == null ? 'selected="selected"' : '' }} >Select</option>
-                                            @foreach(ratings() as $rating)
+                                            @foreach(ratingNames() as $rating)
                                             <option {{ $listedData['rating'] == $loop->remaining+1 ? 'selected="selected"' : '' }} value="{{ $loop->remaining+1 }}">({{ $loop->remaining+1 }}) {{ $rating }}</option>
                                             @endforeach
                                         </select>

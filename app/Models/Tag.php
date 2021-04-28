@@ -9,7 +9,7 @@ class Tag extends Model
 {
     use hasfactory;
 
-    private $fillable = [
+    protected $fillable = [
         'name',
         'parent_id',
         'rating',

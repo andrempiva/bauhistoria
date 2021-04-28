@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('configuration')) {
+if (! function_exists('successMsg')) {
     function successMsg($msg) {
         return ['type' => 'success', 'msg' => $msg];
     }
@@ -15,19 +15,21 @@ if (! function_exists('date_create_dmy')) {
         return date_create($year.$month.$day);
     }
 }
-if (! function_exists('fandoms')) {
-    function fandoms()
+if (! function_exists('fandomList')) {
+    function fandomList()
     {
         return [
+            'cenário-original',
             'worm',
-            'original',
-            'other',
-            'multiple',
+            'harry-potter',
+            'naruto',
+            'multiplos',
+            'outro',
         ];
     }
 }
 if (! function_exists('ratings')) {
-    function ratings()
+    function ratingNames()
     {
         return [
             '10' => 'Masterpiece',

@@ -27,7 +27,7 @@ class CreateStoriesTable extends Migration
             //author
             $table->string('author');
             // cover image
-            $table->string('cover_path')->nullable();
+            $table->string('cover')->nullable();
             // fandom, if applicable
             $table->string('fandom')->nullable();
             // link to the story

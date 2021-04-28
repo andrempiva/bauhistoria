@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
+use App\Slug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -12,20 +12,14 @@ class Story extends Model
 
     protected $fillable = [
         'title',
-        'thread_title',
+        'full_title',
         'type',
         'author',
         'cover',
-        // 'wss_author_link',
         'fandom',
         'status',
         'words',
         'chapters',
-        'link',
-        // 'link_sv',
-        // 'link_ff',
-        // 'link_ao3',
-        // 'link_qq',
         'sequel_of',
         'prequel_of',
         'spinoff_of',
@@ -35,6 +29,8 @@ class Story extends Model
     ];
 
     protected $dates = [
+        'created_at',
+        'updated_at',
         'story_created_at',
         'story_updated_at',
     ];
@@ -65,8 +61,16 @@ class Story extends Model
         return $this->readers()->wherePivotNull('rating')->withSum('stories','user_story.rating')->select('rating')->get();
     }
 
+    // Generates slug from $title
+    // And adds digits at the end to make the slug unique
     public function setTitleAttribute($value) {
+        if ($this->title === $value) return;
+
         $this->attributes['title'] = $value;
-        $this->attributes['slug'] = Str::slug($value);
+
+        $id = $this->id ?? 0;
+        $slug = Slug::createSlug($value, $id, get_class($this));
+
+        $this->attributes['slug'] = $slug;
     }
 }

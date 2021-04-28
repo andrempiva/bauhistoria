@@ -55,7 +55,7 @@ class StoryController extends Controller
             'status' => 'nullable|in:complete,incomplete',
             'fandom' => [
                 'nullable',
-                Rule::in(fandoms())
+                Rule::in(fandomList())
             ],
             'link' => 'nullable',
         ]);
@@ -120,7 +120,7 @@ class StoryController extends Controller
             'status' => 'nullable|in:complete,incomplete',
             'fandom' => [
                 'nullable',
-                Rule::in(fandoms())
+                Rule::in(fandomList())
             ],
             'link' => '',
         ]);

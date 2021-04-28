@@ -29,7 +29,7 @@
                     </select>
                 </div>
                 <x-select name="fandom" value="Fandom">
-                    @foreach(fandoms() as $fandom)
+                    @foreach(fandomList() as $fandom)
                     <option value="{{ $fandom }}">{{ Str::ucfirst($fandom) }}</option>
                     {{-- <option value="original">Original</option> --}}
                     @endforeach

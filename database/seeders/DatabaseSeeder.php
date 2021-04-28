@@ -18,18 +18,18 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        if (!Story::find(1)) {
+        if (!Story::first()) {
             Story::create([
                 'title' => 'A Cloudy Path',
                 'author' => 'LacksCreativity',
             ]);
         }
 
-        if (!User::find(1)) {
+        if (!User::first()) {
             User::create([
                 'name' => 'Andre',
-                'email' => 'lestatv3@gmail.com',
-                'password' => Hash::make('lestatv3')
+                'email' => 'andrempiva@gmail.com',
+                'password' => Hash::make('secret')
             ]);
         }
     }

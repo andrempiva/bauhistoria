@@ -135,7 +135,7 @@ return [
             'rule-name' => 'custom-message',
         ],
         'fandom' => [
-            'in' => 'Fandom must be one of the following: ' . implode(', ', array_map(function ($el) { return ucfirst($el); }, fandoms()))
+            'in' => 'Fandom must be one of the following: ' . implode(', ', array_map(function ($el) { return ucfirst($el); }, fandomList()))
         ],
     ],
 
