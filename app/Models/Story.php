@@ -50,8 +50,8 @@ class Story extends Model
 
     public function readers()
     {
-        // return $this->belongsToMany(User::class, 'listeds');
-        return $this->belongsToMany(User::class, 'listeds')->withPivot([
+        // return $this->belongsToMany(User::class, 'listed');
+        return $this->belongsToMany(User::class, 'listed')->withPivot([
             'my_status',
             'rating',
             'progress',

@@ -43,8 +43,8 @@ class User extends Authenticatable
     ];
 
     public function stories() {
-        // return $this->belongsToMany(Story::class, 'listeds');
-        return $this->belongsToMany(Story::class, 'listeds')->withPivot([
+        // return $this->belongsToMany(Story::class, 'listed');
+        return $this->belongsToMany(Story::class, 'listed')->withPivot([
             'my_status',
             'rating',
             'progress',

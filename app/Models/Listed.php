@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Listed extends Pivot
 {
-    protected $table = "listeds";
+    protected $table = "listed";
 
     // foreignIdFor Story::class 'story_id'
     // foreignIdFor User::class 'user_id'

@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateListedsTable extends Migration
+class CreateListedTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreateListedsTable extends Migration
      */
     public function up()
     {
-        Schema::create('listeds', function (Blueprint $table) {
+        Schema::create('listed', function (Blueprint $table) {
             // $table->id();
             $table->foreignIdFor(Story::class, 'story_id');
             $table->foreignIdFor(User::class, 'user_id');
