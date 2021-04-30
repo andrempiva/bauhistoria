@@ -20,7 +20,6 @@
             @auth
             @php
                 // $hasStory = $user->isStoryListed($user->stories->where('id', $story->id));
-                // $hasStory = $user->stories()->whereId($story->id)->wherePivotNotIn('status', ['none'])->exists();
                 $hasStory = $user->stories->contains('id', $story->id);
                 // $hasStory = true;
                 // dd($hasStory);

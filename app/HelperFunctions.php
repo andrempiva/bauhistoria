@@ -28,7 +28,7 @@ if (! function_exists('fandomList')) {
         ];
     }
 }
-if (! function_exists('ratings')) {
+if (! function_exists('ratingNames')) {
     function ratingNames()
     {
         return [

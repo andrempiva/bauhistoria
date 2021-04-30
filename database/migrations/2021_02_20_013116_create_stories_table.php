@@ -30,10 +30,8 @@ class CreateStoriesTable extends Migration
             $table->string('cover')->nullable();
             // fandom, if applicable
             $table->string('fandom')->nullable();
-            // link to the story
-            $table->string('link')->nullable();
-            // is it complete or incomplete
-            $table->string('status')->nullable();
+            // is it complete or incomplete, hiatus, dead
+            $table->string('story_status')->nullable();
             // word count
             $table->unsignedInteger('words')->nullable();
             // chapter count

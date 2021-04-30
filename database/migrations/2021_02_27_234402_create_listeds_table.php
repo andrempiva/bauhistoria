@@ -19,7 +19,7 @@ class CreateListedsTable extends Migration
             // $table->id();
             $table->foreignIdFor(Story::class, 'story_id');
             $table->foreignIdFor(User::class, 'user_id');
-            $table->string('status')->default('reading');
+            $table->string('my_status')->default('reading');
             $table->unsignedTinyInteger('rating')->nullable();
             $table->unsignedInteger('progress')->nullable();
             $table->boolean('favorited')->default(false);

@@ -8,40 +8,54 @@ use Illuminate\Http\Request;
 class OwnlistController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Quickly put story in user's list
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function add(Request $request, Story $story)
     {
-
-        // dd($story);
-        // $validated = $request->validate([
-        //     'status' => 'nullable|in:reading,complete,on-hold,dropped,plan to read'
-        // ]);
-
-        // $request->user()->listAs($story, $validated['status']);
-        // $request->user()->listAs($story, 'reading');
         $request->user()->addStory($story);
 
         return redirect()->back();
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Adds or change reading status of story in user's list
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function listAs(Request $request, Story $story)
     {
-        // $validated = $request->validate([
-        //     'status' => 'nullable|in:reading,complete,on-hold,dropped,plan to read'
-        // ]);
+        $validated = $request->validate([
+            'my_status' => 'required',
+        //     'my_status' => 'nullable|in:reading,complete,on-hold,dropped,plan to read'
+        ]);
 
-        // $request->user()->listAs($story, $validated['status']);
-        $request->user()->listAs($story, 'reading');
+        // $request->user()->listAs($story, $validated['my_status']);
+        $request->user()->listAs($story, $validated['my_status']);
+
+        return redirect()->back();
+    }
+
+    /**
+     * Update reader status, rating and progress for that story.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Story $story)
+    {
+        $validated = $request->validate([
+            'my_status' => 'required',
+        //     'my_status' => 'nullable|in:reading,complete,on-hold,dropped,plan to read'
+        ]);
+
+        // dd($request->all());
+
+        // $request->user()->listAs($story, $validated['my_status']);
+        $request->user()->updateListed($story, $request->all());
 
         return redirect()->back();
     }

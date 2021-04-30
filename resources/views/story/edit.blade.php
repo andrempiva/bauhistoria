@@ -20,12 +20,12 @@
                     required autocomplete="author" value="{{ old('author', $story->author) }}" />
                 </div>
                 <div class="form-item">
-                    <x-label for="status" :value="__('Status')"/>
-                    <select id="status" name="status"
-                    required autocomplete="status"
+                    <x-label for="story_status" :value="__('Status')"/>
+                    <select id="story_status" name="story_status"
+                    required autocomplete="story_status"
                     class="rounded-md shadow-sm border border-gray-300">
-                        <option {{ old('status', $story->status) == 'incomplete' ? 'selected' : '' }} value="incomplete">Incomplete</option>
-                        <option {{ old('status', $story->status) == 'complete' ? 'selected' : '' }} value="complete">Complete</option>
+                        <option {{ old('story_status', $story->story_status) == 'incomplete' ? 'selected' : '' }} value="incomplete">Incomplete</option>
+                        <option {{ old('story_status', $story->story_status) == 'complete' ? 'selected' : '' }} value="complete">Complete</option>
                     </select>
                 </div>
                 <x-select name="fandom" value="Fandom">

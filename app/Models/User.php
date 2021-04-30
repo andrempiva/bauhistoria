@@ -43,14 +43,13 @@ class User extends Authenticatable
     ];
 
     public function stories() {
-        return $this->belongsToMany(Story::class)->withPivot([
-            'status',
+        // return $this->belongsToMany(Story::class, 'listeds');
+        return $this->belongsToMany(Story::class, 'listeds')->withPivot([
+            'my_status',
             'rating',
             'progress',
             'favorited',
-            'shiny',
-            'feels',
-        ])->using(Listed::class);
+        ])->using(Listed::class)->as('listed')->withTimestamps();
     }
 
     public static function storyToListing($story) {
@@ -58,29 +57,23 @@ class User extends Authenticatable
             // get infro from $story as an array
             return [
                 'id' => $story['id'],
-                'cover_path' => $story['cover_path'],
+                'cover' => $story['cover'],
                 'title' => $story['title'],
                 'author' => $story['author'],
                 'fandom' => $story['fandom'],
-                'status' => $story['pivot']['status'],
-                'rating' => $story['pivot']['rating'],
-                'tags' => json_decode($story['tags']),
-                'shiny' => json_decode($story['shiny']),
-                'feels' => json_decode($story['feels']),
+                'my_status' => $story['listed']['my_status'],
+                'rating' => $story['listed']['rating'],
             ];
         }
         // get infro from $story as an object
         return [
             'id' => $story->id,
-            'cover_path' => $story->cover_path,
+            'cover' => $story->cover,
             'title' => $story->title,
             'author' => $story->author,
             'fandom' => $story->fandom,
-            'status' => $story->pivot->status,
-            'rating' => $story->pivot->rating,
-            'tags' => json_decode($story->tags),
-            'shiny' => json_decode($story->shiny),
-            'feels' => json_decode($story->feels),
+            'my_status' => $story->listed->my_status,
+            'rating' => $story->listed->rating,
         ];
     }
 
@@ -100,27 +93,21 @@ class User extends Authenticatable
             return User::emptyListedData();
         }
         $data = $story->pivot->only([
-            'status',
+            'my_status',
             'rating',
             'progress',
             'favorited',
-            'shiny',
-            'feels',
         ]);
-        // $data['shiny'] = json_decode($data['shiny']);
-        // $data['feels'] = json_decode($data['feels']);
 
         return $data;
     }
 
     static public function emptyListedData() {
         return [
-            'status' => null,
+            'my_status' => null,
             'rating' => null,
             'progress' => null,
             'favorited' => false,
-            'shiny' => null,
-            'feels' => null,
         ];
     }
 
@@ -130,7 +117,7 @@ class User extends Authenticatable
 
     public function getListedOf($story_id) {
         $story = $this->stories->firstWhere('id', $story_id);
-        // $pivot = $this->stories()->whereId($story)->first(['status']);
+        // $pivot = $this->stories()->whereId($story)->first(['my_status']);
 
         return $story == null ? 'none' : $story->pivot->status;
     }
@@ -173,7 +160,7 @@ class User extends Authenticatable
      */
     public function listAs(Story $story, $listStatus) {
         return $this->stories()->syncWithPivotValues($story->id,
-            ['status' => $listStatus],
+            ['my_status' => $listStatus],
             false
         );
     }
@@ -185,17 +172,9 @@ class User extends Authenticatable
         );
     }
 
-    // public function setShiny(Story $story, $shiny) {
-    //     $oriShiny = json_decode($story->pivot->shiny);
-    //     return $this->stories()->syncWithPivotValues($story->id,
-    //         ['shiny' => $shiny],
-    //         false
-    //     );
-    // }
-
-    public function setFeels(Story $story, $feels) {
+    public function updateListed(Story $story, $values) {
         return $this->stories()->syncWithPivotValues($story->id,
-            ['feels' => $feels],
+            $values,
             false
         );
     }
@@ -208,16 +187,14 @@ class User extends Authenticatable
     //     return $return;
     // }
 
-    public function isStoryListed($story) {
-        if (empty($story)) { return false; }
-        if (is_array($story)) { $story = $story[0]; }
-
-        return $story->pivot->status != 'none';
+    public function isStoryListed($story_id) {
+        return Listed::where('story_id', $story_id)
+                ->where('user_id', $this->id)->exists();
     }
 
-    static public function isStatusListed($status) {
-        if ($status == "none") { return false; }
+    // static public function isStatusListed($status) {
+    //     if ($status == "none") { return false; }
 
-        return true;
-    }
+    //     return true;
+    // }
 }

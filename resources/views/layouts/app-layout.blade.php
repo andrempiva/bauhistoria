@@ -30,7 +30,7 @@
             <!-- Page Content -->
             <main>
                 <div class="max-w-7xl mx-auto py-6 px-0 sm:px-6 lg:px-8">
-                    <div class="container shadow bg-white py-6 px-10 min-h-full">
+                    <div class="shadow bg-white py-6 px-10 min-h-full">
                         @if (session('status'))
                             @if (session('status')['type'] == 'success')
                                 {{-- <div class="container flex justify-between bg-green-400 text-white font-bold shadow py-4 px-10 min-h-full"> --}}

@@ -17,7 +17,7 @@ class Story extends Model
         'author',
         'cover',
         'fandom',
-        'status',
+        'story_status',
         'words',
         'chapters',
         'sequel_of',
@@ -35,35 +35,39 @@ class Story extends Model
         'story_updated_at',
     ];
 
-    public function sequelOf() {
+    public function sequelOf()
+    {
         return $this->hasOne(Story::class);
     }
-    public function prequelOf() {
+    public function prequelOf()
+    {
         return $this->hasOne(Story::class);
     }
-    public function spinoffOf() {
+    public function spinoffOf()
+    {
         return $this->hasOne(Story::class);
     }
 
-    public function readers() {
-        // return $this->belongsToMany(User::class);
-        return $this->belongsToMany(User::class)->withPivot([
-            'status',
+    public function readers()
+    {
+        // return $this->belongsToMany(User::class, 'listeds');
+        return $this->belongsToMany(User::class, 'listeds')->withPivot([
+            'my_status',
             'rating',
             'progress',
             'favorited',
-            'shiny',
-            'feels',
-        ])->using(Listed::class);
+        ])->using(Listed::class)->as('listed')->withTimestamps();
     }
 
-    public function getScoreAttribute() {
-        return $this->readers()->wherePivotNull('rating')->withSum('stories','user_story.rating')->select('rating')->get();
+    public function getScoreAttribute()
+    {
+        return $this->readers()->wherePivotNull('rating')->withSum('stories', 'user_story.rating')->select('rating')->get();
     }
 
     // Generates slug from $title
     // And adds digits at the end to make the slug unique
-    public function setTitleAttribute($value) {
+    public function setTitleAttribute($value)
+    {
         if ($this->title === $value) return;
 
         $this->attributes['title'] = $value;

@@ -57,8 +57,8 @@
                         <td class="border py-1 px-4 align-middle fandom">
                             {{ Str::ucfirst( $story['fandom'] ) }}
                         </td>
-                        <td class="border py-4 px-4 align-middle status">
-                            {{ Str::ucfirst( $story['status'] ) }}
+                        <td class="border py-4 px-4 align-middle my_status">
+                            {{ Str::ucfirst( $story['story_status'] ) }}
                         </td>
                         <td class="border py-4 px-4 align-middle text-xl font-bold text-center rating">
                             @if($story['rating'])

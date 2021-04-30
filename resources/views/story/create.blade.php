@@ -20,9 +20,9 @@
                     required autocomplete="author" value="{{ old('author') }}" />
                 </div>
                 <div class="form-item">
-                    <x-label for="status" :value="__('Status')"/>
-                    <select id="status" name="status"
-                    required autocomplete="status"
+                    <x-label for="story_status" :value="__('Status')"/>
+                    <select id="story_status" name="story_status"
+                    required autocomplete="story_status"
                     class="rounded-md shadow-sm border border-gray-300">
                         <option value="incomplete">Incomplete</option>
                         <option value="complete">Complete</option>

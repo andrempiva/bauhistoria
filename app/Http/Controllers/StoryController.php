@@ -52,7 +52,7 @@ class StoryController extends Controller
         $validated = $request->validate([
             'title' => 'bail|required|string|unique:stories,title',
             'author' => 'required|string',
-            'status' => 'nullable|in:complete,incomplete',
+            'my_status' => 'nullable|in:complete,incomplete',
             'fandom' => [
                 'nullable',
                 Rule::in(fandomList())
@@ -76,21 +76,22 @@ class StoryController extends Controller
      */
     public function show($slug)
     {
-        $story = Story::whereSlug($slug)->first();
-        // cache these
-        // $story->loadAggregate('readers', 'shiny');
-        $listedData = User::emptyListedData();
-        $user = null;
+        $story = null;
 
         if (Auth::check()) {
-            $user = $story->readers(Auth::id())->first();
-            if ($user !== null) {
-                $listedData = $user->listedData($story->id);
-            }
+            $story = Story::whereSlug($slug)->with('readers', function($query){
+                $query->where('user_id', Auth::id());
+            })->first();
         }
 
-        return view('story.show', compact('story', 'user', 'listedData'));
-        // return view('story.show', compact('story', 'user'));
+        if ($story === null) {
+            $story = Story::whereSlug($slug)->first();
+        }
+
+        // LOL
+        // $story = Auth::check() ? Story::whereSlug($slug)->with('readers', function($query){ $query->where('user_id', Auth::id()); })->first() : Story::whereSlug($slug)->first();
+
+        return view('story.show', compact('story'));
     }
 
     /**
@@ -117,7 +118,7 @@ class StoryController extends Controller
         $validated = $request->validate([
             'title' => 'bail|required|string|unique:stories,title,'.$story->id,
             'author' => 'required|string',
-            'status' => 'nullable|in:complete,incomplete',
+            'my_status' => 'nullable|in:complete,incomplete',
             'fandom' => [
                 'nullable',
                 Rule::in(fandomList())
