@@ -11,7 +11,12 @@ class Tag extends Model
 
     protected $fillable = [
         'name',
-        'parent_id',
-        'rating',
+        'description',
+        'tag_score',
     ];
+
+    public function tags()
+    {
+        return $this->belongsToMany(Story::class, 'tagged');
+    }
 }

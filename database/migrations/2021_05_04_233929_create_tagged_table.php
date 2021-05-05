@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\Story;
+use App\Models\Tag;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTagsTable extends Migration
+class CreateTaggedTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +15,11 @@ class CreateTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('tagged', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('description')->default('');
-            // confidence score of the tag
-            $table->integer('tag_score')->default(0);
+            $table->foreignIdFor(Story::class);
+            $table->foreignIdFor(Tag::class);
+            $table->tinyInteger('tagged_score')->default(0);
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('tagged');
     }
 }

@@ -23,7 +23,9 @@ class StoryFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(5),
-            'author' => '',
+            'author' => $this->faker->word(),
+            'story_status' => storyStatusList()[random_int(0,2)],
+            'fandom' => fandomList()[random_int(0, count(fandomList())-1)],
         ];
     }
 }

@@ -45,3 +45,11 @@ if (! function_exists('ratingNames')) {
         ];
     }
 }
+if (! function_exists('storyStatusList')) {
+    function storyStatusList()
+    {
+        return [
+            'ongoing', 'dead', 'complete'
+        ];
+    }
+}

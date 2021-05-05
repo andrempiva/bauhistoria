@@ -52,11 +52,8 @@ class StoryController extends Controller
         $validated = $request->validate([
             'title' => 'bail|required|string|unique:stories,title',
             'author' => 'required|string',
-            'my_status' => 'nullable|in:complete,incomplete',
-            'fandom' => [
-                'nullable',
-                Rule::in(fandomList())
-            ],
+            'story_status' => 'nullable|in:'.join(',', storyStatusList()),
+            'fandom' => 'nullable|in:'.join(',', fandomList()),
             'link' => 'nullable',
         ]);
 

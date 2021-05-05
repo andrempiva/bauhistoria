@@ -59,6 +59,13 @@ class Story extends Model
         ])->using(Listed::class)->as('listed')->withTimestamps();
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tagged')->withPivot([
+            'tagged_score',
+        ])->as('tagged')->withTimestamps();
+    }
+
     public function getScoreAttribute()
     {
         return $this->readers()->wherePivotNull('rating')->withSum('stories', 'user_story.rating')->select('rating')->get();
