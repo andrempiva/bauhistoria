@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Story;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,20 +50,31 @@ class StoryController extends Controller
      */
     public function store(Request $request)
     {
+        // validate
+        // look for author (from slug) or create them
         $validated = $request->validate([
             'title' => 'bail|required|string|unique:stories,title',
             'author' => 'required|string',
+            'cover' => 'image|max:200',
             'story_status' => 'nullable|in:'.join(',', storyStatusList()),
             'fandom' => 'nullable|in:'.join(',', fandomList()),
             'link' => 'nullable',
         ]);
 
-        $story = Story::make($validated);
-        $story->save();
+        // get author from its slug or create them
+        $author = (new Author())->firstOrCreateWithSlug($validated['author']);
 
-        // logar atividade
+        $story = $author->stories()->create($validated);
 
-        return redirect()->back()->with('status', successMsg('Story created with success.'));
+        // TODO log story creation
+        // TODO upload and set cover image
+        // TODO create story->changeCover function
+        //     have it delete previous image (if it had any) and change the cover
+
+        // redirect to story page
+        return redirect()->route('story.show', $story)
+            ->with('status', successMsg('Story created with success.'));
+        // return redirect()->back()->with('status', successMsg('Story created with success.'));
     }
 
     /**

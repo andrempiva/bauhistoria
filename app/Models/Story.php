@@ -5,27 +5,42 @@ namespace App\Models;
 use App\Slug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Cache;
 
 class Story extends Model
 {
     use HasFactory;
 
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['author'];
+
     protected $fillable = [
         'title',
         'full_title',
         'type',
-        'author',
         'cover',
         'fandom',
         'story_status',
         'words',
         'chapters',
-        'sequel_of',
-        'prequel_of',
-        'spinoff_of',
+        // 'sequel_of',
+        // 'prequel_of',
+        // 'spinoff_of',
         'locked_at',
         'story_created_at',
         'story_updated_at',
+    ];
+
+    protected $visible = [
+        'title', 'full_title', 'type', 'fandom', 'story_status', 'words',
+        'chapters', 'locked_at', 'story_created_at', 'story_updated_at',
+        'created_at', 'updated_at',
+
+        'score',
     ];
 
     protected $dates = [
@@ -35,6 +50,17 @@ class Story extends Model
         'story_updated_at',
     ];
 
+    /**
+     * Get the author that wrote the story.
+     */
+    public function author()
+    {
+        return $this->belongsTo(Author::class);
+    }
+
+    /**
+     * Get the story it is a sequel, prequel, or spinoff of.
+     */
     public function sequelOf()
     {
         return $this->hasOne(Story::class);
@@ -48,6 +74,9 @@ class Story extends Model
         return $this->hasOne(Story::class);
     }
 
+    /**
+     * Get users who read the story.
+     */
     public function readers()
     {
         // return $this->belongsToMany(User::class, 'listed');
@@ -59,6 +88,9 @@ class Story extends Model
         ])->using(Listed::class)->as('listed')->withTimestamps();
     }
 
+    /**
+     * Get the tags of the story.
+     */
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'tagged')->withPivot([
@@ -68,13 +100,19 @@ class Story extends Model
 
     public function getScoreAttribute()
     {
-        return $this->readers()->wherePivotNull('rating')->withSum('stories', 'user_story.rating')->select('rating')->get();
+        // TODO check if tagging changes the cache key
+        return Cache::tags(['stories', 'score'])->remember($this->id, now()->addMinutes(10), function () {
+        // return Cache::tags(['stories', 'score'])->remember('story-'.$this->id.'-score', now()->addMinutes(10), function () {
+            return $this->readers()->wherePivotNull('rating')->withSum('stories', 'listed.rating')->select('rating')->get();
+        });
+        // return $this->readers()->wherePivotNull('rating')->withSum('stories', 'listed.rating')->select('rating')->get();
     }
 
     // Generates slug from $title
-    // And adds digits at the end to make the slug unique
+    // Adds digits at the end to make the slug unique
     public function setTitleAttribute($value)
     {
+        // no need to do anything if the title hasn't changed
         if ($this->title === $value) return;
 
         $this->attributes['title'] = $value;

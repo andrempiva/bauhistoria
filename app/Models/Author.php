@@ -19,6 +19,11 @@ class Author extends Model
         $this->attributes['slug'] = Str::slug($value);
     }
 
+    public function stories()
+    {
+        return $this->hasMany(Story::class);
+    }
+
     // Acts like firstOrCreate but with its slug
     public function firstOrCreateWithSlug(string $name)
     {

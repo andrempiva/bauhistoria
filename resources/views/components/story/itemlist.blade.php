@@ -8,7 +8,7 @@
     </x-table-td>
 
     <x-table-td>
-        <a href="#">{{ $story->author }}</a>
+        <a href="#">{{ $story->author->name }}</a>
     </x-table-td>
 
     <x-table-td>

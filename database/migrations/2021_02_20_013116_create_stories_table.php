@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Author;
 use App\Models\Story;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -24,8 +25,8 @@ class CreateStoriesTable extends Migration
             $table->string('slug')->unique();
             // is it a story, quest, or adventure
             $table->string('type')->nullable();
-            //author
-            $table->string('author');
+            // author
+            $table->foreignIdFor(Author::class);
             // cover image
             $table->string('cover')->nullable();
             // fandom, if applicable
