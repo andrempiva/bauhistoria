@@ -8,7 +8,7 @@
     </x-table-td>
 
     <x-table-td>
-        <a href="#">{{ $story->author->name }}</a>
+        <a href="{{ route('author.show', $story->author) }}">{{ $story->author->name }}</a>
     </x-table-td>
 
     <x-table-td>

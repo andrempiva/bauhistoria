@@ -12,7 +12,7 @@
                         alt="cover image"
                         >
                 </div>
-                <div class="font-bold">Edit Status</div>
+                <div class="font-bold">Status</div>
                 <hr class="mb-2">
                 @if (!auth()->check() || empty($story['readers'][0]))
                     <x-ownlist.addstory-link story_id="{{ $story->id }}"/>
@@ -89,7 +89,11 @@
                         <h4 class="flex-1 text-4xl font-bold font-serif text-gray-900">
                             {{ $story->title }}
                         </h4>
-                        <h5 class="text-xl text-gray-700">by {{ $story->author }}</h5>
+                        <h5 class="text-xl text-gray-700">
+                            <a href="{{ route('author.show', $story->author) }}">
+                                by {{ $story->author->name }}
+                            </a>
+                        </h5>
                     </div>
                     @if ($story['full_title'] !== null)
                         <div>{{ $story['full_title'] }}</div>

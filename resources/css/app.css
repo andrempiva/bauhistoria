@@ -12,3 +12,17 @@
     padding: 0;
     /* position: absolute; */
 }
+
+.author_story_table {
+    @apply w-full bg-gray-100;
+}
+.author_story_table .cover {
+    padding: 0;
+    padding-left: 0.25em;
+}
+.author_story_table tr {
+    border-bottom: 1px solid grey;
+}
+.author_story_table td {
+    padding: 10px;
+}

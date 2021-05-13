@@ -64,7 +64,8 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        //
+        $author->load('stories');
+        return view('author.show')->with(compact('author'));
     }
 
     /**

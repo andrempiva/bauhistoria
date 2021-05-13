@@ -23,6 +23,9 @@ class CreateUsersTable extends Migration
             $table->string('image')->nullable();
             $table->time('banned_at')->nullable();
             $table->boolean('is_admin')->default(false);
+            // trust - used for voting tags and letting user edit stories
+            //         without having for it to be approved
+            $table->tinyInteger('trust')->default(0);
             $table->timestamps();
         });
     }

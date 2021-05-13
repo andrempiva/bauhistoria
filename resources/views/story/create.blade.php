@@ -24,8 +24,11 @@
                     <select id="story_status" name="story_status"
                     required autocomplete="story_status"
                     class="rounded-md shadow-sm border border-gray-300">
-                        <option value="incomplete">Incomplete</option>
-                        <option value="complete">Complete</option>
+                        @foreach (storyStatusList() as $status)
+                            <option value="{{ $status }}">{{ Str::ucfirst($status) }}</option>
+                        @endforeach
+                        {{-- <option value="incomplete">Incomplete</option> --}}
+                        {{-- <option value="complete">Complete</option> --}}
                     </select>
                 </div>
                 <x-select name="fandom" value="Fandom">

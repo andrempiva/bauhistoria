@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OwnlistController;
 use App\Http\Controllers\StoryController;
@@ -25,10 +26,14 @@ Route::post('settings/profile', [UserController::class, 'profileUpdate'])->name(
 Route::post('settings/password', [UserController::class, 'passwordUpdate'])->name('settings.password');
 
 Route::middleware(['auth'])->prefix('ownlist')->name('ownlist.')->group(function () {
-    Route::get('add/{story}', [OwnlistController::class, 'add'])->name('    ');
+    Route::get('add/{story}', [OwnlistController::class, 'add'])->name('add');
     Route::get('listAs/{story}', [OwnlistController::class, 'listAs'])->name('listAs');
     Route::post('update/{story}', [OwnlistController::class, 'update'])->name('update');
     Route::get('remove/{story}', [OwnlistController::class, 'remove'])->name('remove');
+});
+
+Route::prefix('author')->name('author.')->group(function () {
+    Route::get('{author:slug}', [AuthorController::class, 'show'])->name('show');
 });
 
 require __DIR__.'/auth.php';

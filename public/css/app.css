@@ -31445,6 +31445,25 @@ select {
   /* position: absolute; */
 }
 
+.author_story_table {
+  --tw-bg-opacity: 1;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+  width: 100%;
+}
+
+.author_story_table .cover {
+  padding: 0;
+  padding-left: 0.25em;
+}
+
+.author_story_table tr {
+  border-bottom: 1px solid grey;
+}
+
+.author_story_table td {
+  padding: 10px;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

@@ -6,6 +6,7 @@ use App\Slug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class Story extends Model
 {
@@ -58,6 +59,14 @@ class Story extends Model
         return $this->belongsTo(Author::class);
     }
 
+    // Creates a new author if there's none with that name
+    public function setAuthorAttribute($val)
+    {
+        if ($this->author_id && $this->author->slug === Str::slug($val)) return;
+        $author = app('Author')->firstOrCreateWithSlug($val);
+        $this->author()->associate($author);
+    }
+
     /**
      * Get the story it is a sequel, prequel, or spinoff of.
      */
@@ -85,7 +94,7 @@ class Story extends Model
             'rating',
             'progress',
             'favorited',
-        ])->using(Listed::class)->as('listed')->withTimestamps();
+        ])->as('listed')->withTimestamps();
     }
 
     /**

@@ -49,13 +49,16 @@ class OwnlistController extends Controller
     {
         $validated = $request->validate([
             'my_status' => 'required',
-        //     'my_status' => 'nullable|in:reading,complete,on-hold,dropped,plan to read'
+            // 'my_status' => 'nullable|in:reading,complete,on-hold,dropped,plan to read'
+            'rating' => '',
+            'favorited' => '',
+            'progress' => '',
         ]);
 
         // dd($request->all());
 
         // $request->user()->listAs($story, $validated['my_status']);
-        $request->user()->updateListed($story, $request->all());
+        $request->user()->updateListed($story, $validated);
 
         return redirect()->back();
     }

@@ -62,8 +62,13 @@ class StoryController extends Controller
         ]);
 
         // get author from its slug or create them
-        $author = (new Author())->firstOrCreateWithSlug($validated['author']);
+        // $author = (new Author())->firstOrCreateWithSlug($validated['author']);
+        // $story = $author->stories()->create($validated);
 
+        $author = Author::firstOrCreateWithSlug($validated['author']);
+        // it's now in the model in the setAuthorAttribute function
+
+        // $story = Story::create($validated);
         $story = $author->stories()->create($validated);
 
         // TODO log story creation

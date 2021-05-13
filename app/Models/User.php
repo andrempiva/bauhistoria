@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Hamcrest\Type\IsArray;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'image',
+        'trust',
     ];
 
     /**
@@ -49,10 +51,10 @@ class User extends Authenticatable
             'rating',
             'progress',
             'favorited',
-        ])->using(Listed::class)->as('listed')->withTimestamps();
+        ])->as('listed')->withTimestamps();
     }
 
-    public static function storyToListing($story) {
+    public static function formatStoryForListing($story) {
         if (is_array($story)) {
             // get infro from $story as an array
             return [
@@ -61,6 +63,7 @@ class User extends Authenticatable
                 'title' => $story['title'],
                 'author' => $story['author'],
                 'fandom' => $story['fandom'],
+                'story_status' => $story['story_status'],
                 'my_status' => $story['listed']['my_status'],
                 'rating' => $story['listed']['rating'],
             ];
@@ -72,6 +75,7 @@ class User extends Authenticatable
             'title' => $story->title,
             'author' => $story->author,
             'fandom' => $story->fandom,
+            'story_status' => $story->story_status,
             'my_status' => $story->listed->my_status,
             'rating' => $story->listed->rating,
         ];
@@ -81,10 +85,14 @@ class User extends Authenticatable
      * @return array // user listed stories info for listing
      */
     public function getStoriesForListingAttribute() {
-        // return $this->stories->map('User::storytoListing');
+        return $this->stories->map('User::formatStoryForListing');
 
         // should be faster?
-        return array_map(__NAMESPACE__.'\User::storytoListing', $this->stories->toArray());
+        // return array_map(__NAMESPACE__.'\User::formatStoryForListing', $this->stories()->get(['*', 'author.name'])->toArray());
+    }
+
+    public function getStoriesForListAttribute() {
+        return $this->storiesForListingAttribute();
     }
 
     public function listedData($story_id) {
@@ -111,29 +119,35 @@ class User extends Authenticatable
         ];
     }
 
-    public function getStoriesForListAttribute() {
-        return $this->storiesForListingAttribute();
+    public function getListedStatusOf($story_id) {
+        $story = $this->stories()->whereStoryId($story_id)->first();
+        return $story ? $story->listed->my_status : $story;
+        // return Listed::whereUserId($this->id)->whereStoryId($story_id)->first(['my_status'])->my_status;
+        // $story = $this->stories->firstWhere('id', $story_id);
+
+        // return $story == null ? 'none' : $story->pivot->status;
     }
 
-    public function getListedOf($story_id) {
-        $story = $this->stories->firstWhere('id', $story_id);
-        // $pivot = $this->stories()->whereId($story)->first(['my_status']);
+    public function addStory($story, $values = []) {
+        if (!is_array($values)) $values = [$values];
 
-        return $story == null ? 'none' : $story->pivot->status;
+        $this->stories()->attach([
+            $story->id => $values
+        ]);
     }
 
-    public function addStory($story) {
-        $this->stories()->attach($story->id);
+    public function updateListed(Story $story, $values = []) {
+        return $this->stories()
+            ->updateExistingPivot($story->id, $values);
     }
+
 
     /**
      * $rating from 1 to 10 or null
      */
     public function rate(Story $story, $rating) {
-        return $this->stories()->syncWithPivotValues($story->id,
-            ['rating' => $rating],
-            false
-        );
+        return $this->stories()
+            ->updateExistingPivot($story->id, ['rating' => $rating]);
     }
 
     /**
@@ -143,10 +157,8 @@ class User extends Authenticatable
      *   false
      */
     public function setFavorite(Story $story, bool $favorite) {
-        return $this->stories()->syncWithPivotValues($story->id,
-            ['favorite' => $favorite],
-            false
-        );
+        return $this->stories()
+            ->updateExistingPivot($story->id, ['favorite' => $favorite]);
     }
 
     /**
@@ -158,43 +170,24 @@ class User extends Authenticatable
 	 *   "dropped",
 	 *   "plan to read"
      */
-    public function listAs(Story $story, $listStatus) {
-        return $this->stories()->syncWithPivotValues($story->id,
-            ['my_status' => $listStatus],
-            false
-        );
+    public function listAs(Story $story, $listedStatus) {
+        return $this->stories()
+            ->updateExistingPivot($story->id, ['my_status' => $listedStatus]);
     }
 
     public function setProgress(Story $story, $progress) {
-        return $this->stories()->syncWithPivotValues($story->id,
-            ['progress' => $progress],
-            false
-        );
+        return $this->stories()
+            ->updateExistingPivot($story->id, [
+                'progress' => $story->chapters ? max([$story->chapters, $progress]) : $progress,
+            ]);
     }
-
-    public function updateListed(Story $story, $values) {
-        return $this->stories()->syncWithPivotValues($story->id,
-            $values,
-            false
-        );
-    }
-
-    // public function isListedFromListedAs($status) {
-    //     $return = false;
-    //     if ($status != '' && $status != null) {
-    //         $return = true;
-    //     }
-    //     return $return;
-    // }
 
     public function isStoryListed($story_id) {
-        return Listed::where('story_id', $story_id)
-                ->where('user_id', $this->id)->exists();
+        return $this->stories()->whereStoryId($story_id)->exists();
     }
 
-    // static public function isStatusListed($status) {
-    //     if ($status == "none") { return false; }
+    public function isStoryListedAs($story_id, $status) {
+        return $this->stories()->whereStoryId($story_id)->whereMyStatus($status)->exists();
+    }
 
-    //     return true;
-    // }
 }

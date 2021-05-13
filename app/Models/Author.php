@@ -25,16 +25,16 @@ class Author extends Model
     }
 
     // Acts like firstOrCreate but with its slug
-    public function firstOrCreateWithSlug(string $name)
+    public static function firstOrCreateWithSlug(string $name)
     {
         $attributes = ['slug' => Str::slug($name)];
         $values = ['name' => $name];
 
-        if (! is_null($instance = $this->where($attributes)->first())) {
+        if (! is_null($instance = static::where($attributes)->first())) {
             return $instance;
         }
 
-        return tap($this->newModelInstance($attributes + $values), function ($instance) {
+        return tap(static::newModelInstance($attributes + $values), function ($instance) {
             $instance->save();
         });
     }
