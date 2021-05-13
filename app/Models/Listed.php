@@ -10,7 +10,7 @@ class Listed extends Pivot
 
     protected $fillable = [
         'rating', 'my_status', 'progress', 'favorited'
-    ]
+    ];
 
     // foreignIdFor Story::class 'story_id'
     // foreignIdFor User::class 'user_id'
