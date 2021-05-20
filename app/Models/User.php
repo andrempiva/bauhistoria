@@ -85,7 +85,7 @@ class User extends Authenticatable
      * @return array // user listed stories info for listing
      */
     public function getStoriesForListingAttribute() {
-        return $this->stories->map('User::formatStoryForListing');
+        return $this->stories->map('App\Models\User::formatStoryForListing');
 
         // should be faster?
         // return array_map(__NAMESPACE__.'\User::formatStoryForListing', $this->stories()->get(['*', 'author.name'])->toArray());

@@ -67,11 +67,12 @@
                 <div class="mt-4 font-bold">Statistics</div>
                 <hr class="mb-2">
                 <div class="flex gap-5">
-                    <div>score</div>
+                    <div>score {{ $story->score }}</div>
                 </div>
                 <div>number of users listed story</div>
                 <div class="flex gap-5">
-                    <div>{{ $story->readersCount }}</div>
+                    <div>{{ $story->loadCount('readers')->readers_count }} readers</div>
+                    {{-- <div>{{ $story->readers_count }}</div> --}}
                     <div>popularity#</div>
                 </div>
 

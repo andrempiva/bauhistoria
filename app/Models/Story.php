@@ -109,12 +109,12 @@ class Story extends Model
 
     public function getScoreAttribute()
     {
-        // TODO check if tagging changes the cache key
-        return Cache::tags(['stories', 'score'])->remember($this->id, now()->addMinutes(10), function () {
-        // return Cache::tags(['stories', 'score'])->remember('story-'.$this->id.'-score', now()->addMinutes(10), function () {
-            return $this->readers()->wherePivotNull('rating')->withSum('stories', 'listed.rating')->select('rating')->get();
+        return Cache::remember($this->id, now()->addMinutes(10), function () {
+            return $this->readers()
+                ->wherePivotNotNull('rating')
+                ->withSum('stories', 'listed.rating')
+                ->sum('rating');
         });
-        // return $this->readers()->wherePivotNull('rating')->withSum('stories', 'listed.rating')->select('rating')->get();
     }
 
     // Generates slug from $title

@@ -14,14 +14,14 @@
             <table class="author_story_table">
             <thead>
                 <th></th>
-                <th>Title</th>
-                <th>Extended Title</th>
-                <th>Type</th>
-                <th>Fandom</th>
-                <th>Status</th>
-                <th>Length</th>
-                <th>Created</th>
-                <th>Last Upated</th>
+                <th>{{ __('Title') }}</th>
+                <th>{{ __('Fandom') }}</th>
+                <th>{{ __('Type') }}</th>
+                <th>{{ __('Status') }}</th>
+                <th>{{ __('Length') }}</th>
+                <th>{{ __('Created') }}</th>
+                <th>{{ __('Last Upated') }}</th>
+                <th>{{ __('Score') }}</th>
             </thead>
             <tbody>
                 @foreach ($author->stories as $story)
@@ -33,31 +33,39 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ route('story.show', $story) }}">
+                        <a href="{{ route('story.show', $story) }}"
+                            @if($story->full_title)
+                            title="{{ $story->full_title }}"
+                            @endif
+                            >
                             {{ $story->title }}
                         </a>
                     </td>
                     <td>
-                        {{ $story->full_title ?? "No full title" }}
+                        {{ Str::ucfirst(Str::replaceArray('-', [' '], $story->fandom)) ?? __("Unknown") }}
                     </td>
-                    <td>
-                        {{ $story->type ?? "Unknown" }}
+                    <td class="text-center">
+                        {{ Str::ucfirst($story->type) ?? __("Unknown") }}
                     </td>
-                    <td>
-                        {{ $story->fandom ?? "Unknown" }}
+                    <td class="text-center">
+                        {{ __(Str::ucfirst($story->story_status)) ?? __("Unknown") }}
                     </td>
-                    <td>
-                        {{ $story->story_status ?? "Unknown" }}
+                    <td class="text-center">
+                        <div>{{ trans_choice('story.words', $story->words) }}</div>
+                        <div>{{ trans_choice('story.chapters', $story->chapters) }}</div>
                     </td>
-                    <td>
-                        <div>{{ $story->words ?? "Unknown" }} words</div>
-                        <div>{{ $story->chapters ?? "Unknown" }}</div>
+                    <td class="text-center">
+                        <div>{{ $story->story_created_at ?? __("Unknown") }}</div>
                     </td>
-                    <td>
-                        <div>{{ $story->story_created_at ?? "Unknown" }}</div>
+                    <td class="text-center">
+                        <div>{{ $story->story_updated_at ?? __("Unknown") }}</div>
                     </td>
-                    <td>
-                        <div>{{ $story->story_updated_at ?? "Unknown" }}</div>
+                    <td class="text-center">
+                        @if($story->score > 0)
+                        <div class="text-4xl font-bold">{{ formatScore($story->score) }}</div>
+                        @else
+                        <div class="text-4xl font-bold" title="{{ __("Insuficient data") }}">--</div>
+                        @endif
                     </td>
                 </tr>
                 @endforeach

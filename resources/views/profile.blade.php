@@ -31,16 +31,19 @@
                 <thead class="bg-blue-900 text-white text-sm border-0 border-b border-blue-600">
                     <tr>
                         <th class="border text-left py-2 px-4">
-                            Cover
+                            {{ __('Cover') }}
                         </th>
                         <th class="border text-left py-2 px-4">
-                            Story
+                            {{ __('Story') }}
                         </th>
                         <th class="border text-left py-2 px-4">
-                            Status
+                            {{ __('Fandom') }}
                         </th>
                         <th class="border text-left py-2 px-4">
-                            Rating
+                            {{ __('Status') }}
+                        </th>
+                        <th class="border text-left py-2 px-4">
+                            {{ __('Rating') }}
                         </th>
                     </tr>
                 </thead>
@@ -52,7 +55,7 @@
                         </td>
                         <td class="border py-1 px-4 align-middle name">
                             <div class="font-medium text-lg">{{ $story['title'] }}</div>
-                            <div>by <span class="italic text-gray-700"> {{ $story['author'] }}</span></div>
+                            <div>{{ __('by') }} <a href="{{ route('author.show', $story['author']['slug']) }}" class="italic text-gray-700"> {{ $story['author']->name }}</a></div>
                         </td>
                         <td class="border py-1 px-4 align-middle fandom">
                             {{ Str::ucfirst( $story['fandom'] ) }}
@@ -60,7 +63,7 @@
                         <td class="border py-4 px-4 align-middle my_status">
                             {{ Str::ucfirst( $story['story_status'] ) }}
                         </td>
-                        <td class="border py-4 px-4 align-middle text-xl font-bold text-center rating">
+                        <td class="rating border py-4 px-4 align-middle text-3xl font-bold text-center font-serif">
                             @if($story['rating'])
                                 {{ $story['rating'] }}
                             @else

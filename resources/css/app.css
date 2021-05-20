@@ -14,14 +14,19 @@
 }
 
 .author_story_table {
-    @apply w-full bg-gray-100;
+    @apply w-full bg-gray-50;
+    @apply border border-b-0 border-gray-200;
+}
+.author_story_table th {
+    @apply md:text-base sm:text-sm;
 }
 .author_story_table .cover {
     padding: 0;
     padding-left: 0.25em;
 }
 .author_story_table tr {
-    border-bottom: 1px solid grey;
+    /* border-bottom: 1px solid grey; */
+    @apply border-b border-gray-200;
 }
 .author_story_table td {
     padding: 10px;

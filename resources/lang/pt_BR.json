@@ -706,5 +706,29 @@
     "Your registered VAT Number is :vatNumber.": "Your registered VAT Number is :vatNumber.",
     "Zambia": "Zâmbia",
     "Zimbabwe": "Zimbábue",
-    "Zip \/ Postal Code": "Zip \/ Postal Code"
+    "Zip \/ Postal Code": "Zip \/ Postal Code",
+
+    "Cover": "Capa",
+    "Story": "História",
+    "Fandom": "Fandom",
+    "Status": "Status",
+    "Rating": "Nota",
+    "by": "por",
+    "Title": "Título",
+    "Extended Title": "Título Extendido",
+    "Type": "Tipo",
+    "Length": "Tamanho",
+    "Created": "Criado",
+    "Last Upated": "Última Atualização",
+    "Complete": "Completo",
+    "Ongoing": "Em progresso",
+    "Unknown": "--",
+    "chapters": "capítulos",
+    "words": "palavras",
+    "No full title": "--",
+    "Score": "Nota",
+    "Insuficient data": "Dados insuficientes",
+
+    "story.words": "{null} --|{0} --|[1,*] :count palavras",
+    "story.chapters": "{null} --|{0} --|[1,*] :count capítulos"
 }

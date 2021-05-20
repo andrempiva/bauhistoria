@@ -45,11 +45,19 @@ if (! function_exists('ratingNames')) {
         ];
     }
 }
+
 if (! function_exists('storyStatusList')) {
     function storyStatusList()
     {
         return [
             'ongoing', 'dead', 'complete'
         ];
+    }
+}
+
+if (! function_exists('formatScore')) {
+    function formatScore($score)
+    {
+        return sprintf("%.1f", round($score, 1));
     }
 }
