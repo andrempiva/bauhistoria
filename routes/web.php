@@ -8,7 +8,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [StoryController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('top-stories', [StoryController::class, 'topStories'])->name('top_stories');
 
 Route::prefix('story')->group(function () {

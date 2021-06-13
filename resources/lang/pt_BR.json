@@ -734,5 +734,6 @@
     "Average score": "Nota média",
 
     "story.words": "{null} --|{0} --|[1,*] :count palavras",
-    "story.chapters": "{null} --|{0} --|[1,*] :count capítulos"
+    "story.chapters": "{null} --|{0} --|[1,*] :count capítulos",
+    "author.title": "Perfil do autor(a)"
 }

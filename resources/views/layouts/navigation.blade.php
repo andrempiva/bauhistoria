@@ -15,11 +15,11 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link href="#" :active="false">
-                        {{ __('List') }}
+                    <x-nav-link :href="route('story.home')" :active="false">
+                        {{ __('Histórias') }}
                     </x-nav-link>
                     <x-nav-link href="#" :active="false">
-                        {{ __('About') }}
+                        {{ __('O site') }}
                     </x-nav-link>
                 </div>
             </div>

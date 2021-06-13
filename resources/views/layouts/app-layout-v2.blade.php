@@ -21,6 +21,9 @@
 <body class="bg-gray-50 font-sans text-gray-900 antialiased">
     <div class="min-h-screen bg-gray-100">
         @include('layouts.navigation')
+        @if(isset($body))
+            {{ $body }}
+        @else
         <main class="container mx-auto pt-4 min-h-full">
             <!-- Page Content -->
             <div class="bg-white border b-gray-400 shadow">
@@ -51,6 +54,7 @@
                 </div>
             </div>
         </main>
+        @endif
     </div>
 </body>
 
