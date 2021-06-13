@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout-v2>
     <x-slot name="header">
     </x-slot>
     <x-slot name="slot">
@@ -36,4 +36,4 @@
             @endforelse
         </table>
     </x-slot>
-</x-app-layout>
+</x-app-layout-v2>

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout-v2>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
             {{ __('Edit Story') }}
@@ -42,4 +42,4 @@
             </x-button>
         </form>
     </x-slot>
-</x-app-layout>
+</x-app-layout-v2>

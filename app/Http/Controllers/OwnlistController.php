@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Story;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OwnlistController extends Controller
 {
+	// public function __construct()
+	// {
+	// 	$this->user;
+	// }
+
     /**
      * Quickly put story in user's list
      *
@@ -15,6 +21,16 @@ class OwnlistController extends Controller
      */
     public function add(Request $request, Story $story)
     {
+		// $validation = $request->validate([
+
+		// ]);
+
+		$user = auth()->user();
+		if ($user->isStoryListed($story->id)) {
+			$errorMsg = "You already have this story listed.";
+			return back()->with('status', [ 'type' => 'error', 'msg' => $errorMsg ]);
+		}
+
         $request->user()->addStory($story);
 
         return redirect()->back();

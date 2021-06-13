@@ -25,7 +25,6 @@
                 // dd($hasStory);
                 // dd($story);
             @endphp
-
             <x-button-link
                 type="" class="
                     px-2 py-1 border rounded text-xs
@@ -39,6 +38,13 @@
                 @endif
             </x-button-link>
             @endauth
+
+			@guest
+            <x-button-link type="" class=" px-2 py-1 border rounded text-xs "
+                href="{{ route('ownlist.add', $story->id) . '?status=reading' }}" >
+                {{ __('Add') }}
+			</x-button-link>
+			@endguest
         </div>
     </x-table-td>
 </tr>

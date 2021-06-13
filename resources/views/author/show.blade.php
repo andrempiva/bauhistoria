@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout-v2>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
             {{ __('author.title', ['author'=> $author->name]) }}
@@ -73,4 +73,4 @@
             </table>
         </div>
     </x-slot>
-</x-app-layout>
+</x-app-layout-v2>

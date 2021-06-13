@@ -720,7 +720,7 @@
     "Length": "Tamanho",
     "Created": "Criado",
     "Last Upated": "Última Atualização",
-    "Complete": "Completo",
+    "Complete": "Completa",
     "Ongoing": "Em progresso",
     "Unknown": "--",
     "chapters": "capítulos",
@@ -728,6 +728,10 @@
     "No full title": "--",
     "Score": "Nota",
     "Insuficient data": "Dados insuficientes",
+    "Chapters read": "Capítulos lidos",
+    "Your score": "Sua nota",
+    "Selected": "Selecionado",
+    "Average score": "Nota média",
 
     "story.words": "{null} --|{0} --|[1,*] :count palavras",
     "story.chapters": "{null} --|{0} --|[1,*] :count capítulos"
