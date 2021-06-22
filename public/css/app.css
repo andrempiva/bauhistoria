@@ -31485,6 +31485,11 @@ select {
   padding: 10px;
 }
 
+.story_index_table td {
+  border-width: 1px;
+  padding: 0.5rem
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

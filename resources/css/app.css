@@ -31,3 +31,6 @@
 .author_story_table td {
     padding: 10px;
 }
+.story_index_table td {
+    @apply border p-2
+}

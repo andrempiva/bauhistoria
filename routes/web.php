@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
-Route::get('top-stories', [StoryController::class, 'topStories'])->name('top_stories');
+Route::get('top-historias', [StoryController::class, 'topStories'])->name('top_stories');
 
-Route::prefix('story')->group(function () {
-    Route::get('/', [StoryController::class, 'index'])->name('story.home');
-    Route::get('create', [StoryController::class, 'create'])->name('story.create')->middleware(['auth']);
-    Route::post('create', [StoryController::class, 'store'])->name('story.store')->middleware(['auth']);
+Route::prefix('historias')->group(function () {
+    Route::get('/', [StoryController::class, 'index'])->name('story.index');
+    Route::get('criar', [StoryController::class, 'create'])->name('story.create')->middleware(['auth']);
+    Route::post('criar', [StoryController::class, 'store'])->name('story.store')->middleware(['auth']);
     Route::get('{story:slug}', [StoryController::class, 'show'])->name('story.show');
 });
 
@@ -32,7 +32,7 @@ Route::middleware(['auth'])->prefix('ownlist')->name('ownlist.')->group(function
     Route::get('remove/{story}', [OwnlistController::class, 'remove'])->name('remove');
 });
 
-Route::prefix('author')->name('author.')->group(function () {
+Route::prefix('autores')->name('author.')->group(function () {
     Route::get('{author:slug}', [AuthorController::class, 'show'])->name('show');
 });
 

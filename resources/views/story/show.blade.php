@@ -84,47 +84,88 @@
                 {{-- <div>Your score: {{ $story['readers'][0]['listed']['rating'] ?? __('None') }}</div> --}}
                 <div>edit story</div>
             </div>
+
+
             {{-- Middle panel --}}
             <div class="flex-auto">
                 {{-- {{ $user }} --}}
                 {{-- {{ $story }} --}}
                 <div class="flex flex-col">
-                    {{-- <div class="flex items-baseline"> --}}
-                    <div class="">
-                        <h4 class="flex-1 text-4xl font-bold font-serif text-gray-900">
-                            {{ $story->title }}
-                        </h4>
-                        <h5 class="text-xl text-gray-700">
-                            <a href="{{ route('author.show', $story->author) }}">
-                                {{ __('by') }} {{ $story->author->name }}
-                            </a>
-                        </h5>
+                    <div class="flex justify-between items-center">
+                        <div class="">
+                            <h4 class="flex-1 text-4xl font-bold font-serif text-gray-900">
+                                {{ $story->title }}
+                            </h4>
+                            <h5 class="text-xl text-gray-700">
+                                <a href="{{ route('author.show', $story->author) }}">
+                                    {{ __('by') }} {{ $story->author->name }}
+                                </a>
+                            </h5>
+                        </div>
+                        <div>
+                            <div><span class="font-semibold text-gray-500 text-sm">{{ __('Created at') . ': ' }}</span> <span class="float-right">{{ ($story->story_created_at ? $story->story_created_at : '--') }}</span></div>
+                            <div><span class="font-semibold text-gray-500 text-sm">{{ __('Updated at') . ': ' }}</span> <span>{{ ($story->story_updated_at ? $story->story_updated_at : '--') }}</span></div>
+                        </div>
+                        {{-- <div class="flex justify-between items-center">
+                            <div>
+                                <div class="font-semibold text-gray-500 text-sm">
+                                    <div >{{ __('Created at') . ': ' }}</div>
+                                    <div>{{ __('Updated at') . ': ' }}</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div>{{ ($story->story_created_at ? $story->story_created_at : '--') }}</div>
+                                <div>{{ ($story->story_updated_at ? $story->story_updated_at : '--') }}</div>
+                            </div>
+                        </div> --}}
                     </div>
                     @if ($story['full_title'] !== null)
+                        <hr>
                         <div>{{ $story['full_title'] }}</div>
                     @endif
-                    <hr class="mb-2">
-                    <div>
-                        Fandom: {{ Str::ucfirst(Str::replaceArray('-', [' '], $story->fandom)) ?? __('Unknown') }}
-                    </div>
-                    <td class="text-center">
-                        {{ Str::ucfirst($story->type) ?? __("Unknown") }}
-                    </td>
-                    <td class="text-center">
-                        {{ __(Str::ucfirst($story->story_status)) ?? __("Unknown") }}
-                    </td>
-                    <div class="flex gap-5">
-                        <div>{{ __("Average score") }}:</div>
+                    <hr>
+                    <div class="py-2 bg-gray-50 flex-col md:flex-row flex justify-around items-center">
+                        <div class="">
+                            <div class="inline md:block">
+                                Fandom:
+                            </div>
+                            <div class="inline md:block">
+                                {{ $story->fandom ? __($story->fandom) : __('Unknown') }}
+                            </div>
+                        </div>
                         <div class="text-center">
-                            @if($story->score > 0)
-                            <div class="text-4xl font-bold">{{ formatScore($story->score) }}</div>
-                            @else
-                            <div class="text-4xl font-bold" title="{{ __("Insuficient data") }}">--</div>
-                            @endif
+                            <div>
+                                Tipo:
+                            </div>
+                            <div>
+                                {{ Str::ucfirst($story->type) ?? __("Unknown") }}
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div>
+                                Status:
+                            </div>
+                            <div>
+                                {{ __(Str::ucfirst($story->story_status)) ?? __("Unknown") }}
+                            </div>
+                        </div>
+                        <div class="flex flex-row md:block items-center gap-2 md:gap-0 text-right
+                                    bg-gray-100 border border-gray-200 p-2 shadow-sm
+                        ">
+                            <div>{{ __("Average score") }}:</div>
+                            <div>
+                                @if($story->score > 0)
+                                <div class="text-4xl font-bold">{{ formatScore($story->score) }}</div>
+                                @else
+                                <div class="text-4xl font-bold" title="{{ __("Insuficient data") }}">--</div>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                    <div>number of users listed story</div>
-                    <div class="flex gap-5">
+                    <hr>
+
+                    <div class="py-6 flex justify-evenly items-center flex-col md:flex-row">
+                        <div>number of users listed story</div>
                         <div>ranked #</div>
                         <div>popularity#</div>
                     </div>
@@ -163,6 +204,9 @@
                 <div class="flex-auto">
                     Reviews
                 </div>
+            </div>
+            <div class="lg:block hidden">
+                aaaaaaaaaaaaaaaaaaaaaaaaaaaa
             </div>
         </div>
     </x-slot>

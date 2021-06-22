@@ -24,8 +24,8 @@
                     <th>{{ __('Type') }}</th>
                     <th>{{ __('Status') }}</th>
                     <th>{{ __('Length') }}</th>
-                    <th>{{ __('Created') }}</th>
-                    <th>{{ __('Last Upated') }}</th>
+                    <th>{{ __('Created at') }}</th>
+                    <th>{{ __('Updated at') }}</th>
                     <th>{{ __('Score') }}</th>
                 </thead>
                 <tbody>

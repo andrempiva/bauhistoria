@@ -1,4 +1,4 @@
-<tr class="">
+{{-- <tr class="">
     <x-table-td>
         <img src="https://via.placeholder.com/60x60" alt="">
     </x-table-td>
@@ -47,4 +47,4 @@
 			@endguest
         </div>
     </x-table-td>
-</tr>
+</tr> --}}

@@ -15,7 +15,7 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('story.home')" :active="false">
+                    <x-nav-link :href="route('story.index')" :active="request()->routeIs('story.index')">
                         {{ __('Histórias') }}
                     </x-nav-link>
                     <x-nav-link href="#" :active="false">
