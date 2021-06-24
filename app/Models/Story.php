@@ -63,7 +63,8 @@ class Story extends Model
     public function setAuthorAttribute($val)
     {
         if ($this->author_id && $this->author->slug === Str::slug($val)) return;
-        $author = app('Author')->firstOrCreateWithSlug($val);
+        // $author = app('\Model\Author')->firstOrCreateWithSlug($val);
+        $author = Author::firstOrCreateWithSlug($val);
         $this->author()->associate($author);
     }
 
