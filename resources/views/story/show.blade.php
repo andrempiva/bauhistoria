@@ -13,7 +13,11 @@
                 </div>
                 <div class="font-bold mb-2 border-b-2">Seu status</div>
                 @if (!auth()->check() || empty($story['readers'][0]))
-                    <x-ownlist.addstory-link story_id="{{ $story->id }}" />
+                <div class="flex place-content-end">
+                    <x-ownlist.addstory-link class="" story_id="{{ $story->id }}" >
+                        ✚ {{ __('Add Story') }}
+                    </x-ownlist.addstory-link>
+                </div>
                 @else
                     <div>
                         {{-- <span>Edit Listing</span> --}}
@@ -25,10 +29,11 @@
                                 <div class="flex">
                                     <div class="flex-1 pr-2">Status:</div>
                                     <select name="my_status" value="Status" class="p-0 pr-6 text-xs">
-                                        @foreach (['reading', 'complete', 'on-hold', 'dropped', 'plan to read'] as $my_status)
+                                        {{-- @foreach (['reading', 'complete', 'on-hold', 'dropped', 'plan to read'] as $my_status) --}}
+                                        @foreach (listedStatusList() as $my_status)
                                             <option value="{{ $my_status }}"
-                                                {{ $my_status === $story['readers'][0]['listed']['my_status'] ? 'selected' : '' }}>
-                                                {{ Str::ucfirst($my_status) }}{{ $my_status == $story['readers'][0]['listed']['my_status'] ? ' (Selected)' : '' }}
+                                                {{ $my_status === $story['readers'][0]['listed']['my_status'] ? 'selected=selected' : '' }}>
+                                                {{ Str::ucfirst($my_status) }}{{ $my_status == $story['readers'][0]['listed']['my_status'] ? ' (Atual)' : '' }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -68,7 +73,7 @@
 
                 @endif
                 <div class="text-right">
-                    <x-button-link class="mt-2">Editar História</x-button-link>
+                    <x-button-link href="{{ route('story.edit', $story) }}" class="mt-2">Editar História</x-button-link>
                 </div>
             </div>
 
@@ -98,7 +103,7 @@
                     <div class="ml-2 flex flex-row md:block items-center gap-2 md:gap-0 text-right
                                 bg-gray-100 border border-gray-100 p-2 shadow-sm">
                         <div class="bg-blue-600 text-white text-sm h-full text-center">{{ __("Nota") }}</div>
-                        <div>
+                        <div class="text-center">
                             @if($story->score > 0)
                             <div class="text-4xl font-bold">{{ formatScore($story->score) }}</div>
                             @else
@@ -135,11 +140,11 @@
                             </div>
                             <div class="flex flex-col items-start text-base text-gray-700">
                                 <div>{{ formatInt($story->readers()->count()) }} leitores</div>
-                                <div>Qtd. de palavras: {{ trans_choice('story.words', $story->words ?? "--") }}</div>
-                                <div>Nº de capítulos: {{ trans_choice('story.chapters', $story->chapters ?? "--") }}</div>
+                                <div>Qtd. de palavras: {{ $story->words ? formatInt($story->words)." palavras" : "--" }}</div>
+                                <div>Nº de capítulos: {{ $story->chapters ? formatInt($story->chapters)." capítulos" : "--" }}</div>
                             </div>
                         </div>
-                        {{-- linkaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa --}}
+                        {{-- links? --}}
                     </div>
                 </div>
                 <div class="flex items-start p-2" x-data="{ showAddTag: false }">

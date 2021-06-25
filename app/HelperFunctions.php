@@ -46,6 +46,16 @@ if (! function_exists('ratingNames')) {
     }
 }
 
+if (! function_exists('listedStatusList')) {
+    function listedStatusList()
+    {
+        return [
+            'reading', 'completed', 'on-hold', 'dropped', 'plan-to-read'
+            // 'lendo', 'completa', 'em-espera', 'desistiu', 'planeja ler'
+        ];
+    }
+}
+
 if (! function_exists('storyStatusList')) {
     function storyStatusList()
     {

@@ -141,12 +141,15 @@ class StoryController extends Controller
         $validated = $request->validate([
             'title' => 'bail|required|string|unique:stories,title,'.$story->id,
             'author' => 'required|string',
+            'full_title' => 'sometimes|nullable|string',
+            'fandom' => 'required|string',
+            'type' => 'required|string',
             'my_status' => 'nullable|in:complete,incomplete',
             'fandom' => [
                 'nullable',
                 Rule::in(fandomList())
             ],
-            'link' => 'sometimes|nullable',
+            'link' => 'sometimes|nullable|string',
         ]);
 
         // logar atividade

@@ -86,9 +86,7 @@
             </div>
 
             <div class="flex place-content-end">
-                <x-button class="mt-4">
-                    {{ __('Confirm') }}
-                </x-button>
+                <x-button type="submit" class="mt-4">Gravar Modificações</x-button>
             </div>
         </form>
     </x-slot>

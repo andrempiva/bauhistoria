@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
-Route::get('top-historias', [StoryController::class, 'topStories'])->name('top_stories');
+Route::get('top-historias', [StoryController::class, 'topStories'])->name('top-stories');
 Route::view('sobre', 'about')->name('about');
 
 Route::prefix('historias')->group(function () {

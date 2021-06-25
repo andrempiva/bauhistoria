@@ -121,7 +121,7 @@
                     </td>
                 </tr>
             @empty
-                <td colspan="5" class="text-center">No stories in the Database</td>
+                <td colspan="8" class="text-center">Sem histórias para mostrar</td>
             @endforelse
         </table>
     </x-slot>

@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('story.index')" :active="request()->routeIs('story.index')">
                         {{ __('Histórias') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('top-stories')" :active="request()->routeIs('top-stories')">
+                        {{ __('Top Histórias') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('about')" :active="request()->routeIs('about')">
                         {{ __('O site') }}
                     </x-nav-link>
