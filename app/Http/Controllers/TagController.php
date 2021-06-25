@@ -24,7 +24,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view('tags.create');
     }
 
     /**
@@ -35,14 +35,19 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'bail|required|string|unique:tags,name',
+            'description' => 'nullable',
+            'story' => 'sometimes|string'
         ]);
 
-        $tag = Tag::make($request->only(['name'],));
-        $tag->save();
+        $tag = Tag::create($validated);
 
-        return redirect()->back()->with('status', successMsg('Tag created successfully.'));
+        if ($request->has('story-slug')) {
+            return redirect()->route('story.show', $request->get('story-slug'))->with('status', successMsg('Tag criada com sucesso'));
+        }
+
+        return redirect()->back()->with('status', successMsg('Tag criada com sucesso'));
     }
 
     /**

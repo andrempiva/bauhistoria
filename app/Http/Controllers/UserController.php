@@ -96,8 +96,12 @@ class UserController extends Controller
         // return view('profile')->with(compact('userStories'));
         // return request()->user()->storiesForListing;
 
-        $userStories = $user->storiesForListing;
-        return view('profile')->with(compact('userStories'));
+        // $userStories = $user->storiesForListing;
+        // return view('profile')->with(compact('userStories'));
+
+        $user->load('stories');
+
+        return  view('profile')->with(compact('user'));
     }
 
     /**

@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @if(isset($title))
+    <title>{{ config('app.name', 'StoryChest') }} - {{ $title }}</title>
+    @else
     <title>{{ config('app.name', 'StoryChest') }}</title>
+    @endif
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -32,18 +36,33 @@
                 </div>
                 <div class="card-body p-4">
 
-                    @if (session('status'));
-                        @if (session('status')['type'] == 'success');
-                            <div class="alert-banner relative">
+                    @if (session('status'))
+                        @if (session('status')['type'] == 'success')
+                            <div x-data="{ show: true }" x-show="show" class="alert-banner relative">
                                 <label
-                                    class="w-full mb-2 flex items-start justify-between bg-green-400 text-white font-bold shadow py-4 px-10"
+                                    class="w-full mb-2 flex items-start justify-between
+                                    bg-green-400 text-white font-bold shadow py-4 px-10"
                                     for="success-banner">
                                     {{-- <label class=" transition-all cursor-pointer flex items-start justify-between w-full bg-green-400 text-white font-bold shadow py-4 px-10 min-h-full" for="success-banner" title="Close"></label> --}}
                                     <div class="">
                                         {{-- Sucesso! --}}
                                         {{ session('status')['msg'] }}
                                         {{-- <span class="w-6 inline-flex justify-center" title="Close">x</span> --}}
+                                        <span x-on:click="show=false" class="w-6 inline-flex cursor-pointer justify-center" title="Close">x</span>
                                     </div>
+                                </label>
+                            </div>
+                        @endif
+                        @if (session('status')['type'] == 'warning')
+                            <div x-data="{ show: true }" x-show="show" class="alert-banner relative">
+                                <label
+                                    class="w-full mb-2 flex items-start justify-between
+                                    bg-yellow-300 text-gray-700 font-bold shadow py-4 px-10"
+                                    for="warning-banner">
+                                    <div class="">
+                                        {{ session('status')['msg'] }}
+                                    </div>
+                                    <span x-on:click="show=false" class="w-6 inline-flex cursor-pointer justify-center" title="Close">x</span>
                                 </label>
                             </div>
                         @endif

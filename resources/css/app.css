@@ -34,3 +34,7 @@
 .story_index_table td {
     @apply border p-2
 }
+
+input[type='text'], select {
+    @apply shadow-sm border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+}

@@ -18,8 +18,8 @@
             @endif --}}
 
             <!-- Page Content -->
-            <div class="flex flex-row gap-12">
-                <div class="w-9/12">
+            <div class="flex flex-col sm:flex-row gap-12">
+                <div class="sm:ml-auto sm:w-6/12">
                     <x-card>
                         <x-slot name="header">
                             Bem vindo(a)!
@@ -32,7 +32,7 @@
                         </p>
                     </x-card>
                 </div>
-                <div class="w-3/12">
+                <div class="sm:w-3/12">
                     <x-card>
                         <x-slot name="header">
                             Últimas histórias

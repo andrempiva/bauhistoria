@@ -19,7 +19,7 @@ if (! function_exists('fandomList')) {
     function fandomList()
     {
         return [
-            'cenário-original',
+            'original',
             'worm',
             'harry-potter',
             'naruto',
@@ -50,7 +50,18 @@ if (! function_exists('storyStatusList')) {
     function storyStatusList()
     {
         return [
-            'ongoing', 'dead', 'complete'
+            // 'ongoing', 'dead', 'complete'
+            'em-andamento', 'morta', 'completa'
+        ];
+    }
+}
+
+if (! function_exists('storyTypeList')) {
+    function storyTypeList()
+    {
+        return [
+            // 'story', 'quest'
+            'historia', 'quest',
         ];
     }
 }
@@ -58,6 +69,14 @@ if (! function_exists('storyStatusList')) {
 if (! function_exists('formatScore')) {
     function formatScore($score)
     {
-        return sprintf("%.1f", round($score, 1));
+        // return sprintf("%.1f", round($score, 1));
+        return number_format(round($score, 1), 1, ',', '.');
+    }
+}
+
+if (! function_exists('formatInt')) {
+    function formatInt($number)
+    {
+        return number_format($number, 0, ',', '.');
     }
 }

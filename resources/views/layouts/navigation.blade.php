@@ -18,7 +18,7 @@
                     <x-nav-link :href="route('story.index')" :active="request()->routeIs('story.index')">
                         {{ __('Histórias') }}
                     </x-nav-link>
-                    <x-nav-link href="#" :active="false">
+                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')">
                         {{ __('O site') }}
                     </x-nav-link>
                 </div>
@@ -27,6 +27,14 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 @auth
+                    @if(auth()->user()->is_admin)
+                    <div class="sm:mr-6">
+                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                            {{ __('Administração') }}
+                        </x-nav-link>
+                    </div>
+                    @endif
+
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
@@ -114,6 +122,13 @@
             <div class="space-y-1">
                 <!-- Authenticated -->
                 @auth
+
+                @if(auth()->user()->is_admin)
+                    <x-responsive-nav-link :href="route('admin')">
+                        {{ __('Administração') }}
+                    </x-responsive-nav-link>
+                @endif
+
                 <x-responsive-nav-link :href="route('profile', auth()->user()->name)">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>

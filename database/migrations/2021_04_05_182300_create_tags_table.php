@@ -16,7 +16,7 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('description')->default('');
+            $table->string('description')->default('')->nullable();
             // confidence score of the tag
             $table->integer('tag_score')->default(0);
             $table->timestamps();

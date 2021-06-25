@@ -1,11 +1,12 @@
 <x-app-layout-v2>
-    <x-slot name="title">Histórias</x-slot>
+    <x-slot name="title">Top Histórias</x-slot>
     <x-slot name="header">
+        {{ __('Top Stories') }}
     </x-slot>
     <x-slot name="slot">
         <div class="flex justify-between mb-2">
             <h3 class="font-serif text-4xl text-gray-700">
-                {{ __('Stories') }}
+                {{ __('Top Stories') }}
             </h3>
         </div>
         <div class="flex items-center mb-4">
@@ -36,7 +37,6 @@
                 </tr>
             </thead>
             @forelse ($stories as $story)
-                {{-- <x-story.itemlist :story="$story" :user="$user"/> --}}
                 <tr class="">
                     <td>
                         <a href="{{ route('story.show', $story) }}"
@@ -90,7 +90,18 @@
                     <td>
                         <div class="flex items-center place-content-evenly">
                             @auth
-                            @php
+                            @if($user->isStoryListed($story->id))
+                                @php($storyListedAs = $user->getListedStatusOf($story->id))
+
+                                @if ($storyListedAs ==)
+
+                                @else
+
+                                @endif
+                            @else
+                            {{ __('Add') }}
+                            @endif
+                            {{-- @php
                                 // $hasStory = $user->isStoryListed($user->stories->where('id', $story->id));
                                 $hasStory = $user->stories->contains('id', $story->id);
                                 // $hasStory = true;
@@ -107,7 +118,7 @@
                                 {{ __('Add') }}
                                 @else
                                 {{ __('Remove') }}
-                                @endif
+                                @endif --}}
                             </x-button-link>
                             @endauth
 

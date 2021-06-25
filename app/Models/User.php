@@ -182,10 +182,16 @@ class User extends Authenticatable
             ]);
     }
 
+    /**
+     * Checks if story is listed
+     */
     public function isStoryListed($story_id) {
         return $this->stories()->whereStoryId($story_id)->exists();
     }
 
+    /**
+     * Check if the story is listed with that status
+     */
     public function isStoryListedAs($story_id, $status) {
         return $this->stories()->whereStoryId($story_id)->whereMyStatus($status)->exists();
     }

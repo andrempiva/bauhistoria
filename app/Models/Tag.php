@@ -15,8 +15,10 @@ class Tag extends Model
         'tag_score',
     ];
 
-    public function tags()
+    public function stories()
     {
-        return $this->belongsToMany(Story::class, 'tagged');
+        return $this->belongsToMany(Story::class, 'tagged')->withPivot([
+            'tagged_score',
+        ])->as('tagged')->withTimestamps();
     }
 }

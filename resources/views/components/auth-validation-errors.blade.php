@@ -11,9 +11,6 @@
 
         <ul class="mt-3 list-disc list-inside text-sm dark:text-white">
             @foreach ($errors->all() as $error)
-            {{-- <li>Error aaaaaaaaaaaaaaaaaaaaaaaaa</li>
-            <li>Error aaaaaaaaaaaaaaaaaaaaaaaaa</li>
-            <li>Error aaaaaaaaaaaaaaaaaaaaaaaaa</li> --}}
             <li>{{ $error }}</li>
             @endforeach
         </ul>

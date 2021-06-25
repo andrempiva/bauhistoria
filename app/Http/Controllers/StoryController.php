@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Models\Story;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -102,10 +104,16 @@ class StoryController extends Controller
             $story = Story::whereSlug($slug)->first();
         }
 
+        if ($story === null) { throw new ModelNotFoundException(); }
+
+
+
+        $tags = Tag::withCount(['stories'])->get();
+
         // LOL
         // $story = Auth::check() ? Story::whereSlug($slug)->with('readers', function($query){ $query->where('user_id', Auth::id()); })->first() : Story::whereSlug($slug)->first();
 
-        return view('story.show', compact('story'));
+        return view('story.show', compact('story', 'tags'));
     }
 
     /**
@@ -114,9 +122,10 @@ class StoryController extends Controller
      * @param  \App\Models\Story  $story
      * @return \Illuminate\Http\Response
      */
-    public function edit(Story $story)
+    public function edit($slug)
     {
-        $story->load('tags');
+        $story = Story::whereSlug($slug)->with('tags')->first();
+
         return view('story.edit')->with(['story' => $story]);
     }
 
@@ -137,14 +146,14 @@ class StoryController extends Controller
                 'nullable',
                 Rule::in(fandomList())
             ],
-            'link' => '',
+            'link' => 'sometimes|nullable',
         ]);
-
-        $story->update($validated);
 
         // logar atividade
 
-        return redirect()->route('home')->with('status', successMsg('Story updated with success.'));
+        $story->update($validated);
+
+        return redirect()->route('story.show', $story->slug)->with('status', successMsg('História atualizada com sucesso.'));
     }
 
     /**
@@ -158,36 +167,106 @@ class StoryController extends Controller
         //
     }
 
-    public function topStories() {
-        // from stories with more than 5 rates
-        $topStories = DB::table('stories')
-                ->join('story_user', function ($join) {
-                    $join->on('stories.id', '=', 'story_user.story_id')
-                        ->where('rating', '!=', null);
-                        // ->whereCount('rating', '>', 10);
-                })
-                // ->toSql();
-                ->selectRaw('avg(rating) as avg_rating')->groupBy('id')
-                ->orderByDesc('avg_rating')->havingRaw('COUNT(rating) > ?', [10])
-                ->get();
-                // ->average('story_user.rating')->orderBy('avg_rating', 'desc')->limit(10);
-                // $query->select('story_id')
-                //     ->from('story_user')
-                //     ->whereColumn('stories.id', 'story_user.story_id')
-                //     ->groupBy('story_id')
-                //     ->havingCount('rating', '>', 9)
-            // })
-            // ->select()
-        // whereHas('readers', function (Builder $query) {
-        //     $query->whereNotNull('rating');
-        // })
-        // ->join('story_user.story_id', 'stories.id')
+    public function topStories()
+    {
+        $stories = Story::topStories();
+        $user = null;
+        if (auth()->check()) {
+            // $user = auth()->user()->load('stories');
+            $user = User::whereId(auth()->id())->with('stories')->first();
+            // dd($user);
+            //DB::whereId(auth()->id())->with('stories')->get()[0];
+        }
 
-        // selectRaw('avg(su.rating) as avg_rating')->from('story_user as su')->orderBy('avg_rating', 'desc')->limit(10)->get();
-        // get average, order_by average, limit 10
+        return view('story.top-stories')->with(compact('stories', 'user'));
+        // // from stories with more than 5 rates
+        // $topStories = DB::table('stories')
+        //         ->join('listed', function ($join) {
+        //             $join->on('stories.id', '=', 'listed.story_id')
+        //                 ->where('rating', '!=', null);
+        //                 // ->whereCount('rating', '>', 10);
+        //         })
+        //         // ->toSql();
+        //         ->selectRaw('avg(rating) as avg_rating')->groupBy('id')
+        //         ->orderByDesc('avg_rating')
+        //         // ->havingRaw('COUNT(rating) > ?', [10])
+        //         ->get();
+        //         // ->average('listed.rating')->orderBy('avg_rating', 'desc')->limit(10);
+        //         // $query->select('story_id')
+        //         //     ->from('listed')
+        //         //     ->whereColumn('stories.id', 'listed.story_id')
+        //         //     ->groupBy('story_id')
+        //         //     ->havingCount('rating', '>', 9)
+        //     // })
+        //     // ->select()
+        // // whereHas('readers', function (Builder $query) {
+        // //     $query->whereNotNull('rating');
+        // // })
+        // // ->join('listed.story_id', 'stories.id')
 
-        return response()->json($topStories);
+        // // selectRaw('avg(su.rating) as avg_rating')->from('listed as su')->orderBy('avg_rating', 'desc')->limit(10)->get();
+        // // get average, order_by average, limit 10
 
-        return view('top-stories')->with(compact($topStories));
+        // // return response()->json($topStories);
+
+        // $topStories = Story::topStories();
+
+        // return view('story.top-stories')->with(compact('topStories'));
+    }
+
+    public function assignTag(Request $request, $slug)
+    {
+        $story = Story::whereSlug($slug)->with('tags')->first();
+        $tagId = Tag::find($request->get('tag'))->id;
+
+        if ($story->tags->contains(
+                function($tag) use ($tagId) {
+                    return $tag->id == $tagId;
+                }
+            )
+        ) {
+            return back()->with("status", [ 'type' => 'warning', 'msg' => 'Essa história já tem essa tag' ]);
+        };
+
+        $story->tags()->attach($tagId);
+
+        return back()->with("status", [ 'type' => 'success', 'msg' => 'Tag adicionada à história']);
+    }
+
+    public function rateUp(Request $request, Story $story, Tag $tag)
+    {
+        // $validated = $request->validate([
+        //     'tag'
+        // ]);
+        $association = $story->tags()->whereTagId($tag->id)->first();
+
+        if ($association === null) {
+            return back()->with([ 'type' => 'warning', 'msg' => 'Essa história não tem essa tag' ]);
+        }
+
+        $score = $association->tagged->tagged_score;
+        $story->tags()->updateExistingPivot($tag->id, ['tagged_score' => $score + 1]);
+
+
+        // $association->tagged_score = $association->tagged_score + 1;
+        // $association->save();
+
+        return back()->with([ 'type' => 'sucesso', 'msg' => 'Deu joínha!' ]);
+    }
+
+    public function rateDown(Request $request, Story $story, Tag $tag)
+    {
+        $association = $story->tags()->whereTagId($tag->id)->first();
+
+        if ($association === null) {
+            return back()->with([ 'type' => 'warning', 'msg' => 'Essa história não tem essa tag' ]);
+        }
+
+        $score = $association->tagged->tagged_score;
+        $story->tags()->updateExistingPivot($tag->id, ['tagged_score' => $score - 1]);
+
+        // $association->tagged->tagged_score = $association->tagged_score - 1;
+        // $association->save();
+        return back()->with([ 'type' => 'sucesso', 'msg' => 'Deu joínha!' ]);
     }
 }

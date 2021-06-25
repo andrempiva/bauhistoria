@@ -108,16 +108,6 @@ class Story extends Model
         ])->as('tagged')->withTimestamps();
     }
 
-    public function getScoreAttribute()
-    {
-        return Cache::remember($this->id, now()->addMinutes(10), function () {
-            return $this->readers()
-                ->wherePivotNotNull('rating')
-                ->withSum('stories', 'listed.rating')
-                ->sum('rating');
-        });
-    }
-
     // Generates slug from $title
     // Adds digits at the end to make the slug unique
     public function setTitleAttribute($value)
@@ -131,5 +121,44 @@ class Story extends Model
         $slug = Slug::createSlug($value, $id, get_class($this));
 
         $this->attributes['slug'] = $slug;
+    }
+
+    public function getScoreAttribute()
+    {
+        return Cache::remember($this->id, now()->addMinutes(10), function() {
+            return $this->createScore();
+        });
+    }
+
+    public function createScore()
+    {
+        // return $this->readers()
+        //     ->withAvg('stories', 'listed.rating')->get()
+        //     ->sortBy('stories_avg_listedrating')
+        //     // ->get()->orderBy
+        //     ;
+
+        return $this->readers()
+            // ->wherePivotNotNull('rating')
+            // ->withAvg('stories', 'listed.rating')
+            ->avg('rating');
+    }
+
+    public function ratedCount()
+    {
+        return Cache::remember($this->id.'rated-count', now()->addMinutes(10), function() {
+            return $this->readers()->wherePivotNotNull('rating')->count();
+        });
+    }
+
+    static public function topStories()
+    {
+        return Cache::remember('topStories', now()->addMinutes(10), function() {
+            // return Story::withAvg('ratedReaders', 'listed.rating')->get('readers_avg_listedrating');
+            return Story::withAvg('readers', 'listed.rating')->get('readers_avg_listedrating')
+                ->whereNotNull('readers_avg_listedrating')
+                ->sortBy('readers_avg_listedrating')
+                ->take(10);
+        });
     }
 }

@@ -1,4 +1,6 @@
 <x-app-layout-v2>
+    <x-slot name="title">{{ $author->name }}</x-slot>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
             {{ __('author.title', ['author'=> $author->name]) }}
@@ -34,7 +36,7 @@
                         <td class="cover">
                             <a href="{{ route('story.show', $story) }}">
                                 {{-- {{ $story->cover }} --}}
-                                <img src="https://via.placeholder.com/60x60" alt="">
+                                <img src="{{ asset("img/60x60.png") }}" alt="">
                             </a>
                         </td>
                         <td>
