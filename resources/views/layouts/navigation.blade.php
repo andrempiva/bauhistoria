@@ -32,7 +32,7 @@
                 @auth
                     @if(auth()->user()->is_admin)
                     <div class="sm:mr-6">
-                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                        <x-nav-link :href="route('admin.home')" :active="request()->routeIs('admin.home')">
                             {{ __('Administração') }}
                         </x-nav-link>
                     </div>
@@ -127,7 +127,7 @@
                 @auth
 
                 @if(auth()->user()->is_admin)
-                    <x-responsive-nav-link :href="route('admin')">
+                    <x-responsive-nav-link :href="route('admin.home')">
                         {{ __('Administração') }}
                     </x-responsive-nav-link>
                 @endif

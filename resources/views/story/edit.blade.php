@@ -85,6 +85,16 @@
                 </div>
             </div>
 
+            @if(auth()->user()->is_admin)
+            <div class="border border-blue-300 rounded-lg mt-4 p-2 w-max">
+                <p>Opções de Admin</p>
+                <div class="flex place-items-center">
+                    <input type="checkbox" name="is_locked" id="is_locked" {{ $story->locked_at ? 'checked' : '' }}>
+                    <x-label for="is_locked">🔒 Edição da História Trancada</x-label>
+                </div>
+            </div>
+            @endif
+
             <div class="flex place-content-end">
                 <x-button type="submit" class="mt-4">Gravar Modificações</x-button>
             </div>

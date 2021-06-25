@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\UnauthorizedException;
 
 class StoryController extends Controller
 {
@@ -90,21 +91,24 @@ class StoryController extends Controller
      * @param  \App\Models\Story  $story
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show(Story $story)
     {
-        $story = null;
+        // $story = Story::whereSlug($slug)->firstOrFail();
 
         if (Auth::check()) {
-            $story = Story::whereSlug($slug)->with('readers', function($query){
+            // $story = Story::whereSlug($slug)->with('readers', function($query){
+            $story->load(['readers' => function($query){
+                // Auth::id()
                 $query->where('user_id', Auth::id());
-            })->first();
+            }]);
+            // })->first();
         }
 
-        if ($story === null) {
-            $story = Story::whereSlug($slug)->first();
-        }
+        // if ($story === null) {
+        //     $story = Story::whereSlug($slug)->first();
+        // }
 
-        if ($story === null) { throw new ModelNotFoundException(); }
+        // if ($story === null) { throw new ModelNotFoundException(); }
 
 
 
@@ -122,9 +126,13 @@ class StoryController extends Controller
      * @param  \App\Models\Story  $story
      * @return \Illuminate\Http\Response
      */
-    public function edit($slug)
+    public function edit(Story $story)
     {
-        $story = Story::whereSlug($slug)->with('tags')->first();
+        if ($story->locked_at && !auth()->user()->is_admin) {
+			return back()->with('status', [ 'type' => 'error', 'msg' => 'A edição dessa história foi trancada.' ]);
+        }
+        // $story = Story::whereSlug($slug)->with('tags')->first();
+        // $story->loadMissing('tags');
 
         return view('story.edit')->with(['story' => $story]);
     }
@@ -138,6 +146,11 @@ class StoryController extends Controller
      */
     public function update(Request $request, Story $story)
     {
+        if ($story->locked_at && !auth()->user()->is_admin) {
+			return redirect()->route('story.show', $story)
+                ->with('status', [ 'type' => 'error', 'msg' => 'A edição dessa história foi trancada.' ]);
+        }
+
         $validated = $request->validate([
             'title' => 'bail|required|string|unique:stories,title,'.$story->id,
             'author' => 'required|string',
@@ -150,9 +163,18 @@ class StoryController extends Controller
                 Rule::in(fandomList())
             ],
             'link' => 'sometimes|nullable|string',
+            'is_locked' => 'sometimes',
         ]);
 
         // logar atividade
+
+        if (auth()->user()->is_admin) {
+            // Lock Unlock mechanism
+            if ($request->has('is_locked') != $story->locked_at) {
+                $story->locked_at = $story->locked_at ? null : now();
+                $story->save();
+            }
+        }
 
         $story->update($validated);
 
@@ -217,9 +239,9 @@ class StoryController extends Controller
         // return view('story.top-stories')->with(compact('topStories'));
     }
 
-    public function assignTag(Request $request, $slug)
+    public function assignTag(Request $request, Story $story)
     {
-        $story = Story::whereSlug($slug)->with('tags')->first();
+        // $story = Story::whereSlug($slug)->with('tags')->first();
         $tagId = Tag::find($request->get('tag'))->id;
 
         if ($story->tags->contains(

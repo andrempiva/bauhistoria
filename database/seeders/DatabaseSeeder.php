@@ -31,11 +31,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         if (!User::first()) {
-            User::create([
+            $user = User::create([
                 'name' => 'Andre',
                 'email' => 'andrempiva@gmail.com',
                 'password' => Hash::make('secret')
-            ])->stories()->attach([1,2,3]);
+            ]);
+            $user->stories()->attach([1,2,3]);
+            $user->is_admin = true;
+            $user->save();
         }
     }
 }

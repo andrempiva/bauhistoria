@@ -1,4 +1,6 @@
 <x-app-layout-v2>
+    <x-slot name="title">Sobre o Site</x-slot>
+
     <x-slot name="body">
         <main class="container mx-auto pt-12 pb-8 min-h-full">
             <!-- Page Content -->

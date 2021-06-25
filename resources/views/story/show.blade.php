@@ -91,7 +91,7 @@
                             </a>
                         </h5>
                         <div class="ml-auto"><span class="font-semibold text-gray-500 text-sm">{{ __('História criada em') . ': ' }}</span> <span>{{ ($story->story_created_at ? $story->story_created_at : '--') }}</span></div>
-                        <div><span class="font-semibold text-gray-500 text-sm">{{ __('História atualizada em') . ': ' }}</span> <span>{{ ($story->story_updated_at ? $story->story_updated_at : '--') }}</span></div>
+                        <div><span class="font-semibold text-gray-500 text-sm">{{ __('História atualizada em') . ': ' }}</span> <span>{{ ($story->story_updated_at ? $story->story_updated_at.', '.$story->story_updated_at->diffForHumans() : '--') }}</span></div>
                     </div>
                 </div>
                 @if ($story['full_title'] !== null)
