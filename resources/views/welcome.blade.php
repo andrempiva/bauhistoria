@@ -38,7 +38,7 @@
                             Últimas histórias
                         </x-slot>
                         <ul>
-                            @foreach ($stories as $story)
+                            @forelse ($stories as $story)
                             <li class="mb-2">
                                 <div class="flex">
                                     <div class="flex-shrink-0 border border-gray-300">
@@ -57,7 +57,9 @@
                                     </div>
                                 </div>
                             </li>
-                            @endforeach
+                            @empty
+                            <li>Sem histórias para mostrar</li>
+                            @endforelse
                         </ul>
                     </x-card>
                 </div>
