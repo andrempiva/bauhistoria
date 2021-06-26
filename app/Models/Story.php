@@ -59,29 +59,46 @@ class Story extends Model
         return $this->belongsTo(Author::class);
     }
 
-    // Creates a new author if there's none with that name
+    /**
+     * Creates a new author if there's none with that name
+     */
     public function setAuthorAttribute($val)
     {
+        // if author wasn't changed
         if ($this->author_id && $this->author->slug === Str::slug($val)) return;
-        // $author = app('\Model\Author')->firstOrCreateWithSlug($val);
         $author = Author::firstOrCreateWithSlug($val);
         $this->author()->associate($author);
     }
 
     /**
-     * Get the story it is a sequel, prequel, or spinoff of.
+     * Is a sequel, prequel or spinoff of another story?
      */
     public function sequelOf()
     {
-        return $this->hasOne(Story::class);
+        return $this->belongsTo(Story::class);
     }
     public function prequelOf()
     {
-        return $this->hasOne(Story::class);
+        return $this->belongsTo(Story::class);
     }
     public function spinoffOf()
     {
-        return $this->hasOne(Story::class);
+        return $this->belongsTo(Story::class);
+    }
+    /**
+     * This story's sequel, prequel, and spinoffs
+     */
+    public function sequel()
+    {
+        return $this->hasOne(Story::class, 'sequel_of');
+    }
+    public function prequel()
+    {
+        return $this->hasOne(Story::class, 'prequel_of');
+    }
+    public function spinoffs()
+    {
+        return $this->hasMany(Story::class, 'spinoff_of');
     }
 
     /**
