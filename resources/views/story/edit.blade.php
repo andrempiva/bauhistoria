@@ -21,6 +21,7 @@
                         <x-label for="author">{{ __('Autor') }}<span class="ordinal text-red-600 font-bold">*</span></x-label>
                         <x-input id="author" name="author" class="block mt-1 w-full"
                         required autocomplete="off" value="{{ old('author', $story->author->name) }}" />
+                        <label for="author" class="text-xs text-gray-500">Se não existir, o autor novo será criado</label>
                     </div>
                     <x-form-item class="w-full" name="full_title" autocomplete="off">Título Completo</x-form-item>
                     <x-select name="fandom" value="Fandom">
@@ -57,14 +58,14 @@
                             rounded-br-none" spellcheck="true" autocomplete="off" maxlength="1024"></textarea>
                     </x-label>
                     <div class="form-item inline-block">
-                        <x-label for="words" value="{{ __('Qtd de Palavras') }}"/>
+                        <x-label for="words" value="{{ __('Qtd. de Palavras') }}"/>
                         <input type="number" id="words" name="words" class="block mt-1 rounded-md shadow-sm
                             border border-gray-300 p-1.5 focus:border-indigo-300 focus:ring focus:ring-indigo-200
                             focus:ring-opacity-50 w-32" autocomplete="off"
                             value="{{ old('words', $story->words) }}" />
                     </div>
                     <div class="form-item inline-block">
-                        <x-label for="chapters" value="{{ __('Qtd de Capítulos') }}"/>
+                        <x-label for="chapters" value="{{ __('Qtd. de Capítulos') }}"/>
                         <input type="number" id="chapters" name="chapters" class="block mt-1 rounded-md shadow-sm
                             border border-gray-300 p-1.5 focus:border-indigo-300 focus:ring focus:ring-indigo-200
                             focus:ring-opacity-50 w-32" autocomplete="off"
@@ -92,9 +93,9 @@
                 <p>Opções de Admin</p>
                 <div class="flex place-items-center">
                     <input type="checkbox" name="is_locked" id="is_locked" {{ $story->locked_at ? 'checked' : '' }}>
-                    <x-label for="is_locked">🔒 Edição da História Trancada</x-label>
+                    <x-label for="is_locked">🔒 Trancar História</x-label>
                 </div>
-                <p class="text-xs text-gray-500">Impede que a história seja editada por usuários</p>
+                <label for="is_locked" class="text-xs text-gray-500">Impede que a história seja editada por usuários</label>
             </div>
             @endif
 

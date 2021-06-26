@@ -46,32 +46,17 @@
                         <p><span class="font-bold text-sm">Modificado:</span> {{ $author->updated_at->diffForHumans() }}, {{ $author->updated_at }}</p>
                         <p><span class="font-bold text-sm">Cadastrado:</span> {{ $author->created_at->diffForHumans() }}, {{ $author->created_at }}</p>
                     </div>
-
-                    <form
-                        class="ml-auto"
-                        method="post" action="{{ route('admin.authors.destroy', [$author->id]) }}">
-                        @csrf @method('delete')
-                        <div class="field is-grouped text-right">
-                            <div class="control mb-2">
-                                <a href="{{ route('admin.authors.edit', $author) }}" class="inline-flex items-center bg-gray-700 border border-transparent
-                                rounded-md font-semibold text-xs text-white uppercase tracking-widest
-                                hover:bg-gray-600 active:bg-gray-800 focus:outline-none focus:border-gray-800
-                                focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150
-                                px-4 py-2">
-                                    Editar
-                                </a>
-                            </div>
-                            <div class="control">
-                                <button type="submit" class="inline-flex items-center bg-red-800 border border-transparent
-                                rounded-md font-semibold text-xs text-white uppercase tracking-widest
-                                hover:bg-red-700 active:bg-red-900 focus:outline-none focus:border-red-900
-                                focus:ring ring-red-300 disabled:opacity-25 transition ease-in-out duration-150
-                                px-4 py-2">
-                                    Deletar
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="field ml-auto is-grouped text-right">
+                        {{-- <div class="control mb-2"> --}}
+                            <a href="{{ route('admin.authors.edit', $author) }}" class="inline-flex items-center bg-gray-700 border border-transparent
+                            rounded-md font-semibold text-xs text-white uppercase tracking-widest
+                            hover:bg-gray-600 active:bg-gray-800 focus:outline-none focus:border-gray-800
+                            focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150
+                            px-4 py-2 text-center">
+                                Editar ou Deletar
+                            </a>
+                        {{-- </div> --}}
+                    </div>
                 </li>
             @endforeach
         </ul>

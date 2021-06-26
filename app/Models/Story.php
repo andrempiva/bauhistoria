@@ -125,8 +125,10 @@ class Story extends Model
         ])->as('tagged')->withTimestamps();
     }
 
-    // Generates slug from $title
-    // Adds digits at the end to make the slug unique
+    /**
+     * Generates slug from $title
+     * Adds digits at the end to make the slug unique
+     */
     public function setTitleAttribute($value)
     {
         // no need to do anything if the title hasn't changed
@@ -174,7 +176,7 @@ class Story extends Model
             // return Story::withAvg('ratedReaders', 'listed.rating')->get('readers_avg_listedrating');
             return Story::withAvg('readers', 'listed.rating')->get('readers_avg_listedrating')
                 ->whereNotNull('readers_avg_listedrating')
-                ->sortBy('readers_avg_listedrating')
+                ->sortByDesc('readers_avg_listedrating')
                 ->take(10);
         });
     }

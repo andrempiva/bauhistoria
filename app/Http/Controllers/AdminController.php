@@ -108,18 +108,33 @@ class AdminController extends Controller
         return view('admin.authors.index')->with(compact('authors'));
     }
     // public function authorsShow(Author $author) { return view('admin.authors.show')->with(compact('user')); }
-    public function authorsEdit(Author $author) { return view('admin.authors.edit')->with(compact('user')); }
+    public function authorsEdit(Author $author) {
+        return view('admin.authors.edit')->with(compact('author'));
+    }
     public function authorsUpdate(Request $request, Author $author)
     {
-        if ($request->has('is_banned') != $author->banned_at) {
-            $author->banned_at = $author->banned_at ? null : now();
-            $author->save();
-        }
-        $author->update($request->all());
-        return redirect()->route('admin.authors.index')->with("status", [ 'type' => 'success', 'msg' => 'Deletado Atualizado com sucesso' ]);
+        $validated = $request->validate([
+            'name' => [
+                'sometimes', 'required', 'min:3',
+                Rule::unique('authors', 'name')->ignore($author->id)
+            ],
+        ]);
+        $author->update($validated);
+        return redirect()->route('admin.authors.index')->with("status", [ 'type' => 'success', 'msg' => 'Autor atualizado com sucesso' ]);
+    }
+    public function authorsChangeDestroy(Request $request, Author $author)
+    {
+        $request->validate([
+            'new_author' => 'required|string|min:3'
+        ]);
+        $newAuthor = Author::firstOrCreateWithSlug($request->get('new_author'));
+        $author->stories()->update(['author_id' => $newAuthor->id]);
+        $author->delete();
+        return redirect(route('admin.authors.index'))->with("status", [ 'type' => 'success', 'msg' => 'Deletado.' ]);
     }
     public function authorsDestroy(Author $author)
     {
+        $author->stories()->delete();
         $author->delete();
         return redirect(route('admin.authors.index'))->with("status", [ 'type' => 'success', 'msg' => 'Deletado.' ]);
     }
@@ -135,12 +150,8 @@ class AdminController extends Controller
     public function tagsEdit(Tag $tag) { return view('admin.tags.edit')->with(compact('tag')); }
     public function tagsUpdate(Request $request, Tag $tag)
     {
-        if ($request->has('is_banned') != $tag->banned_at) {
-            $tag->banned_at = $tag->banned_at ? null : now();
-            $tag->save();
-        }
         $tag->update($request->all());
-        return redirect()->route('admin.tags.index')->with("status", [ 'type' => 'success', 'msg' => 'Deletado Atualizado com sucesso' ]);
+        return redirect()->route('admin.tags.index')->with("status", [ 'type' => 'success', 'msg' => 'Atualizado com sucesso' ]);
     }
     public function tagsDestroy(Tag $tag)
     {

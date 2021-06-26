@@ -11,6 +11,9 @@
                 </div>
                 <div class="w-9/12 lg:w-6/12 mr-auto">
                     <x-session-status/>
+                    @if(isset($body))
+                    {{ $body }}
+                    @else
                     <x-card>
                         <x-slot name="header">
                             @if(isset($header))
@@ -21,6 +24,7 @@
                         </x-slot>
                         {{ $slot }}
                     </x-card>
+                    @endif
                 </div>
                 {{-- <div class="w-3/12">
                 </div> --}}

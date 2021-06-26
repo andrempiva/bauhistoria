@@ -23,6 +23,7 @@ if (! function_exists('fandomList')) {
             'worm',
             'harry-potter',
             'naruto',
+            'crepusculo',
             'multiplos',
             'outro',
         ];

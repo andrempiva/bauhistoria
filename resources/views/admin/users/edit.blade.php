@@ -28,7 +28,7 @@
                     <div class="form-item inline-block w-80">
                         <x-label for="password_confirmation">{{ __('Confirmar Senha') }}</x-label>
                         <x-input type="password_confirmation" id="password_confirmation" name="password_confirmation" class="block mt-1 w-full"
-                        autocomplete="off" x-bind:required=""/>
+                        autocomplete="off"/>
                     </div>
                 </div>
             </div>
