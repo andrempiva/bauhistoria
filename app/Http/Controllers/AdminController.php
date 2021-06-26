@@ -15,11 +15,19 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-
     // CRUD BLOCK
-    public function usersIndex()
+    public function usersIndex(Request $request)
     {
-        $users = User::get();
+        switch ($request->get('sort_by')) {
+            case 'updated': $sort = 'updated_at'; break;
+            case 'id': default: $sort = 'id'; break;
+        }
+        switch ($request->get('order')) {
+            case 'desc': $order = 'desc'; break;
+            case 'asc': default: $order = 'asc'; break;
+        }
+
+        $users = User::orderBy($sort, $order)->get();
         return view('admin.users.index')->with(compact('users'));
     }
     public function usersShow(User $user) { return view('admin.users.edit')->with(compact('user')); }
@@ -41,26 +49,26 @@ class AdminController extends Controller
     // // // // // // //
 
     // CRUD BLOCK
-    public function storiesIndex()
+    public function storiesIndex(Request $request)
     {
-        $stories = Story::get();
-        return view('admin.stories.index')->with(compact('stories'));
-    }
-    public function storiesShow(Story $story) { return view('admin.stories.show')->with(compact('story')); }
-    public function storiesEdit(Story $story) { return view('admin.stories.edit')->with(compact('story')); }
-    public function storiesUpdate(Request $request, Story $story)
-    {
-        if ($request->has('is_banned') != $story->banned_at) {
-            $story->banned_at = $story->banned_at ? null : now();
-            $story->save();
+        switch ($request->get('sort_by')) {
+            case 'updated': $sort = 'updated_at'; break;
+            case 'author_id': $sort = 'author_id'; break;
+            case 'id': default: $sort = 'id'; break;
         }
-        $story->update($request->all());
-        return redirect()->route('admin.stories.index')->with("status", [ 'type' => 'success', 'msg' => 'Deletado Atualizado com sucesso' ]);
+        switch ($request->get('order')) {
+            case 'desc': $order = 'desc'; break;
+            case 'asc': default: $order = 'asc'; break;
+        }
+
+        $stories = Story::orderBy($sort, $order)->get();
+
+        return view('admin.stories.index')->with(compact('stories'));
     }
     public function storiesDestroy(Story $story)
     {
         $story->delete();
-        return redirect(route('admin.stories.index'))->with("status", [ 'type' => 'success', 'msg' => 'Deletado.' ]);
+        return redirect(route('admin.stories.index'))->with("status", [ 'type' => 'success', 'msg' => 'História deletada.' ]);
     }
     // // // // // // //
 

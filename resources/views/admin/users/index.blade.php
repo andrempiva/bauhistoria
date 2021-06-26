@@ -1,6 +1,27 @@
 <x-admin-layout>
     <x-slot name="title">Admin Usuários</x-slot>
-    <x-slot name="header">Usuários</x-slot>
+    <x-slot name="header">
+        <div class="flex justify-between items-center flex-wrap">
+            Usuários
+            <form class="font-normal text-sm flex flex-wrap items-center gap-1" method="GET" action="{{ route('admin.users.index') }}">
+                <div>
+                    Ordernar por: <select class="py-0" name="sort_by" id="sort_by">
+                        <option value="id">ID</option>
+                        <option value="updated" {{ request()->get('sort_by') == 'updated' ? 'selected=selected' : '' }}>Atualizado</option>
+                    </select>
+                </div>
+                <div>
+                    Ordem: <select class="py-0" name="order" id="order">
+                        <option value="asc">Asc</option>
+                        <option value="desc" {{ request()->get('order') == 'desc' ? 'selected=selected' : '' }}>Desc</option>
+                    </select>
+                </div>
+                <button class="font-bold text-gray-600 py-0 px-3 border border-gray-300 shadow-sm
+                    rounded-xl bg-white"
+                    type="submit">Ordenar</button>
+            </form>
+        </div>
+    </x-slot>
     <x-slot name="slot">
         <ul class="border">
             @foreach ($users as $user)
@@ -11,8 +32,8 @@
                             <h1 class="name text-xl text-gray-900 hover:underline hover:text-indigo-900">
                                 {{ $user->name }}</h1>
                         </a>
-                        <p><b>Cadastrado:</b> {{ $user->created_at->diffForHumans() }}, {{ $user->created_at }}</p>
-                        <p><b>Atualizado:</b> {{ $user->updated_at->diffForHumans() }}, {{ $user->updated_at }}</p>
+                        <p><span class="font-bold text-sm">Atualizado:</span> {{ $user->updated_at->diffForHumans() }}, {{ $user->updated_at }}</p>
+                        <p><span class="font-bold text-sm">Cadastrado:</span> {{ $user->created_at->diffForHumans() }}, {{ $user->created_at }}</p>
                     </div>
 
                     <form method="post" action="{{ route('admin.users.destroy', [$user->id]) }}">

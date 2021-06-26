@@ -10,6 +10,7 @@
                     <x-admin-menu></x-admin-menu>
                 </div>
                 <div class="w-6/12 mr-auto">
+                    <x-session-status/>
                     <x-card>
                         <x-slot name="header">
                             @if(isset($header))

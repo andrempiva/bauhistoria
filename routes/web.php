@@ -60,10 +60,10 @@ Route::prefix('admin')->middleware(['admin'])->name('admin.')->group(function() 
     });
     Route::prefix('historias')->name('stories.')->group(function () {
         Route::get('', [AdminController::class, 'storiesIndex'])->name('index');
-        Route::get('{story}/edit', [AdminController::class, 'storiesEdit'])->name('edit');
-        Route::post('{story}/edit', [AdminController::class, 'storiesUpdate'])->name('update');
+        Route::get('{story}/edit', [StoryController::class, 'edit'])->name('edit');
+        Route::post('{story}/edit', [StoryController::class, 'update'])->name('update');
         Route::delete('{story}', [AdminController::class, 'storiesDestroy'])->name('destroy');
-        Route::get('{story}', [AdminController::class, 'storiesShow'])->name('show');
+        // Route::get('{story}', [AdminController::class, 'storiesShow'])->name('show');
     });
     Route::prefix('autores')->name('authors.')->group(function () {
         Route::get('', [AdminController::class, 'authorsIndex'])->name('index');

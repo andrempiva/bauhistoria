@@ -6,7 +6,9 @@
     </x-slot>
 
     <x-slot name="slot">
-        <form action="{{ route('story.edit', $story->slug) }}" method="post">
+        <form action="{{ request()->routeIs('admin.stories.edit')
+            ? route('admin.stories.edit', $story)
+            : route('story.edit', $story->slug) }}" method="post">
             @csrf
             <div class="flex gap-6">
                 <div class="w-full flex flex-wrap justify-between content-start gap-2">
@@ -92,6 +94,7 @@
                     <input type="checkbox" name="is_locked" id="is_locked" {{ $story->locked_at ? 'checked' : '' }}>
                     <x-label for="is_locked">🔒 Edição da História Trancada</x-label>
                 </div>
+                <p class="text-xs text-gray-500">Impede que a história seja editada por usuários</p>
             </div>
             @endif
 

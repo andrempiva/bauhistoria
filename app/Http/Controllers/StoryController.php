@@ -178,7 +178,13 @@ class StoryController extends Controller
 
         $story->update($validated);
 
-        return redirect()->route('story.show', $story->slug)->with('status', successMsg('História atualizada com sucesso.'));
+        $returnRoute = route('story.show', $story->slug);
+        if ($request->routeIs('admin.stories.update')) {
+            $returnRoute = route('admin.stories.index');
+            // return redirect()->route('admin.stories.index')->with('status', successMsg('História atualizada com sucesso.'));
+        }
+        return redirect($returnRoute)->with('status', successMsg('História atualizada com sucesso.'));
+        // return redirect()->route('story.show', $story->slug)->with('status', successMsg('História atualizada com sucesso.'));
     }
 
     /**

@@ -36,38 +36,7 @@
                     {{ $header }}
                 </div>
                 <div class="card-body p-4">
-
-                    @if (session('status'))
-                        @if (session('status')['type'] == 'success')
-                            <div x-data="{ show: true }" x-show="show" class="alert-banner relative">
-                                <label
-                                    class="w-full mb-2 flex items-start justify-between
-                                    bg-green-400 text-white font-bold shadow py-4 px-10"
-                                    for="success-banner">
-                                    {{-- <label class=" transition-all cursor-pointer flex items-start justify-between w-full bg-green-400 text-white font-bold shadow py-4 px-10 min-h-full" for="success-banner" title="Close"></label> --}}
-                                    <div class="">
-                                        {{-- Sucesso! --}}
-                                        {{ session('status')['msg'] }}
-                                        {{-- <span class="w-6 inline-flex justify-center" title="Close">x</span> --}}
-                                        <span x-on:click="show=false" class="w-6 inline-flex cursor-pointer justify-center" title="Close">x</span>
-                                    </div>
-                                </label>
-                            </div>
-                        @endif
-                        @if (session('status')['type'] == 'warning')
-                            <div x-data="{ show: true }" x-show="show" class="alert-banner relative">
-                                <label
-                                    class="w-full mb-2 flex items-start justify-between
-                                    bg-yellow-300 text-gray-700 font-bold shadow py-4 px-10"
-                                    for="warning-banner">
-                                    <div class="">
-                                        {{ session('status')['msg'] }}
-                                    </div>
-                                    <span x-on:click="show=false" class="w-6 inline-flex cursor-pointer justify-center" title="Close">x</span>
-                                </label>
-                            </div>
-                        @endif
-                    @endif
+                    <x-session-status/>
                     <x-auth-validation-errors :errors="$errors" class="container shadow mb-2 items-start justify-between
                     bg-red-500 text-white font-bold py-6 px-10 " />
                     {{ $slot }}
