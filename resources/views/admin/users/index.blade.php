@@ -1,8 +1,6 @@
 <x-admin-layout>
     <x-slot name="title">Admin Usuários</x-slot>
-    <x-slot name="header">
-        {{ __('Usuários') }}
-    </x-slot>
+    <x-slot name="header">Usuários</x-slot>
     <x-slot name="slot">
         <ul class="border">
             @foreach ($users as $user)

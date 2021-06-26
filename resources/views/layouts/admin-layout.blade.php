@@ -12,7 +12,11 @@
                 <div class="w-6/12 mr-auto">
                     <x-card>
                         <x-slot name="header">
+                            @if(isset($header))
+                            {{ $header }}
+                            @else
                             {{ __('Administração') }}
+                            @endif
                         </x-slot>
                         {{ $slot }}
                     </x-card>
