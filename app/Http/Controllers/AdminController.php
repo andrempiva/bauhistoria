@@ -7,6 +7,8 @@ use App\Models\Story;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -34,12 +36,30 @@ class AdminController extends Controller
     public function usersEdit(User $user) { return view('admin.users.edit')->with(compact('user')); }
     public function usersUpdate(Request $request, User $user)
     {
+        $request->validate([
+            'name' => [
+                'sometimes', 'required', 'min:3',
+                Rule::unique('users', 'name')->ignore($user->id)
+            ],
+            'email' => [
+                'sometimes', 'required', 'email',
+                Rule::unique('users', 'email')->ignore($user->id)
+            ],
+            'password' => 'nullable|confirmed',
+        ]);
+
         if ($request->has('is_banned') != $user->banned_at) {
             $user->banned_at = $user->banned_at ? null : now();
-            $user->save();
         }
-        $user->update($request->all());
-        return redirect()->route('admin.users.index')->with("status", [ 'type' => 'success', 'msg' => 'Deletado Atualizado com sucesso' ]);
+        if ($request->has('is_admin') != $user->is_admin) {
+            $user->is_admin = !$user->is_admin;
+        }
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+        $user->update($request->except('password'));
+
+        return redirect()->route('admin.users.index')->with("status", [ 'type' => 'success', 'msg' => 'Atualizado com sucesso' ]);
     }
     public function usersDestroy(User $user)
     {
@@ -73,12 +93,21 @@ class AdminController extends Controller
     // // // // // // //
 
     // CRUD BLOCK
-    public function authorsIndex()
+    public function authorsIndex(Request $request)
     {
-        $authors = Author::withCount('stories')->get();
+        switch ($request->get('sort_by')) {
+            case 'updated': $sort = 'updated_at'; break;
+            case 'story_qty': $sort = 'stories_count'; break;
+            case 'id': default: $sort = 'id'; break;
+        }
+        switch ($request->get('order')) {
+            case 'desc': $order = 'desc'; break;
+            case 'asc': default: $order = 'asc'; break;
+        }
+        $authors = Author::withCount('stories')->orderBy($sort, $order)->get();
         return view('admin.authors.index')->with(compact('authors'));
     }
-    public function authorsShow(Author $author) { return view('admin.authors.show')->with(compact('user')); }
+    // public function authorsShow(Author $author) { return view('admin.authors.show')->with(compact('user')); }
     public function authorsEdit(Author $author) { return view('admin.authors.edit')->with(compact('user')); }
     public function authorsUpdate(Request $request, Author $author)
     {

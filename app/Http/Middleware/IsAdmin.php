@@ -19,6 +19,7 @@ class IsAdmin
         if (!auth()->user()->is_admin) {
             abort(404);
         }
+        // dd(auth()->user()->is_admin);
 
         return $next($request);
     }

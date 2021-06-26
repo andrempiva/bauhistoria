@@ -23,12 +23,12 @@
                     <div class="form-item inline-block w-80">
                         <x-label for="password">{{ __('Password') }}</x-label>
                         <x-input type="password" id="password" name="password" class="block mt-1 w-full"
-                        required autocomplete="off" value="" />
+                        autocomplete="off"/>
                     </div>
                     <div class="form-item inline-block w-80">
                         <x-label for="password_confirmation">{{ __('Confirmar Senha') }}</x-label>
                         <x-input type="password_confirmation" id="password_confirmation" name="password_confirmation" class="block mt-1 w-full"
-                        required autocomplete="off" value="" />
+                        autocomplete="off" x-bind:required=""/>
                     </div>
                 </div>
             </div>

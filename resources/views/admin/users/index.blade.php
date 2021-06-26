@@ -28,10 +28,11 @@
                 <li
                     class="text-gray-800 bg-gray-{{ $loop->even ? '50' : '200' }} flex justify-between items-center {{ !$loop->last ? 'border-b' : '' }} p-2">
                     <div class="flex flex-col self-stretch justify-between">
-                        <a href="{{ route('admin.users.show', [$user->id]) }}">
-                            <h1 class="name text-xl text-gray-900 hover:underline hover:text-indigo-900">
-                                {{ $user->name }}</h1>
-                        </a>
+                        <h1 class="name text-xl text-gray-900">
+                            <a class="hover:underline hover:text-indigo-900" href="{{ route('admin.users.edit', $user) }}">
+                                {{ $user->name }}
+                            </a>
+                        </h1>
                         <p><span class="font-bold text-sm">Modificado:</span> {{ $user->updated_at->diffForHumans() }}, {{ $user->updated_at }}</p>
                         <p><span class="font-bold text-sm">Cadastrado:</span> {{ $user->created_at->diffForHumans() }}, {{ $user->created_at }}</p>
                     </div>

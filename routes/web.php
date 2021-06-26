@@ -51,33 +51,33 @@ Route::prefix('tags')->middleware(['auth', 'unbanned'])->name('tags.')->group(fu
 
 Route::prefix('admin')->middleware(['admin'])->name('admin.')->group(function() {
     Route::get('', [AdminController::class, 'index'])->name('home');
-    Route::prefix('usuarios')->name('users.')->group(function () {
+    Route::prefix('usuarios')->middleware(['admin'])->name('users.')->group(function () {
         Route::get('', [AdminController::class, 'usersIndex'])->name('index');
         Route::get('{user}/edit', [AdminController::class, 'usersEdit'])->name('edit');
         Route::post('{user}/edit', [AdminController::class, 'usersUpdate'])->name('update');
         Route::delete('{user}', [AdminController::class, 'usersDestroy'])->name('destroy');
-        Route::get('{user}', [AdminController::class, 'usersShow'])->name('show');
+        // Route::get('{user}', [AdminController::class, 'usersShow'])->name('show');
     });
-    Route::prefix('historias')->name('stories.')->group(function () {
+    Route::prefix('historias')->middleware(['admin'])->middleware(['admin'])->name('stories.')->group(function () {
         Route::get('', [AdminController::class, 'storiesIndex'])->name('index');
         Route::get('{story}/edit', [StoryController::class, 'edit'])->name('edit');
         Route::post('{story}/edit', [StoryController::class, 'update'])->name('update');
         Route::delete('{story}', [AdminController::class, 'storiesDestroy'])->name('destroy');
         // Route::get('{story}', [AdminController::class, 'storiesShow'])->name('show');
     });
-    Route::prefix('autores')->name('authors.')->group(function () {
+    Route::prefix('autores')->middleware(['admin'])->name('authors.')->group(function () {
         Route::get('', [AdminController::class, 'authorsIndex'])->name('index');
         Route::get('{author}/edit', [AdminController::class, 'authorsEdit'])->name('edit');
         Route::post('{author}/edit', [AdminController::class, 'authorsUpdate'])->name('update');
         Route::delete('{author}', [AdminController::class, 'authorsDestroy'])->name('destroy');
-        Route::get('{author}', [AdminController::class, 'authorsShow'])->name('show');
+        // Route::get('{author}', [AdminController::class, 'authorsShow'])->name('show');
     });
-    Route::prefix('tags')->name('tags.')->group(function () {
+    Route::prefix('tags')->middleware(['admin'])->name('tags.')->group(function () {
         Route::get('', [AdminController::class, 'tagsIndex'])->name('index');
         Route::get('{tag}/edit', [AdminController::class, 'tagsEdit'])->name('edit');
         Route::post('{tag}/edit', [AdminController::class, 'tagsUpdate'])->name('update');
         Route::delete('{tag}', [AdminController::class, 'tagsDestroy'])->name('destroy');
-        Route::get('{tag}', [AdminController::class, 'tagsShow'])->name('show');
+        // Route::get('{tag}', [AdminController::class, 'tagsShow'])->name('show');
     });
 });
 
