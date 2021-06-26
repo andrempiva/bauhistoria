@@ -9,7 +9,7 @@
                 <div class="w-3/12">
                     <x-admin-menu></x-admin-menu>
                 </div>
-                <div class="w-6/12 mr-auto">
+                <div class="w-9/12 lg:w-6/12 mr-auto">
                     <x-session-status/>
                     <x-card>
                         <x-slot name="header">

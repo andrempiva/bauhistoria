@@ -1,18 +1,18 @@
 <x-admin-layout>
     <x-slot name="title">Admin Histórias</x-slot>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center flex-wrap">
             {{ __('Histórias') }}
-            <form class="font-normal text-sm flex flex-wrap items-center gap-1" method="GET" action="{{ route('admin.stories.index') }}">
+            <form class="font-normal text-sm flex flex-col lg:flex-row lg:w-min gap-2" method="GET" action="{{ route('admin.stories.index') }}">
                 <div>
                     Ordernar por: <select class="py-0" name="sort_by" id="sort_by">
                         <option value="id">ID</option>
                         <option value="author_id" {{ request()->get('sort_by') == 'author_id' ? 'selected=selected' : '' }}>ID do Autor</option>
-                        <option value="updated" {{ request()->get('sort_by') == 'updated' ? 'selected=selected' : '' }}>Atualizado</option>
+                        <option value="updated" {{ request()->get('sort_by') == 'updated' ? 'selected=selected' : '' }}>Modificada</option>
                     </select>
                 </div>
-                <div>
-                    Ordem: <select class="py-0" name="order" id="order">
+                <div class="flex lg:block justify-between items-center gap-2">
+                    Ordem: <select class="py-0 w-full lg:w-auto" name="order" id="order">
                         <option value="asc">Asc</option>
                         <option value="desc" {{ request()->get('order') == 'desc' ? 'selected=selected' : '' }}>Desc</option>
                     </select>
@@ -24,7 +24,6 @@
         </div>
     </x-slot>
     <x-slot name="slot">
-
         <ul class="border">
             @foreach ($stories as $story)
                 <li
@@ -42,8 +41,8 @@
                                 {{ $story->author->name }}
                             </a>
                         </h2>
-                        <p><span class="font-bold text-sm">Atualizado:</span> {{ $story->updated_at->diffForHumans() }}, {{ $story->updated_at }}</p>
-                        <p><span class="font-bold text-sm">Cadastrado:</span> {{ $story->created_at->diffForHumans() }}, {{ $story->created_at }}</p>
+                        <p><span class="font-bold text-sm">Modificada:</span> {{ $story->updated_at->diffForHumans() }}, {{ $story->updated_at }}</p>
+                        <p><span class="font-bold text-sm">Cadastrada:</span> {{ $story->created_at->diffForHumans() }}, {{ $story->created_at }}</p>
                     </div>
 
                     <form

@@ -75,7 +75,7 @@ class AdminController extends Controller
     // CRUD BLOCK
     public function authorsIndex()
     {
-        $authors = Author::get();
+        $authors = Author::withCount('stories')->get();
         return view('admin.authors.index')->with(compact('authors'));
     }
     public function authorsShow(Author $author) { return view('admin.authors.show')->with(compact('user')); }
