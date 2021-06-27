@@ -1,9 +1,10 @@
 # Baú de História
 
 Por André Murgo Piva - 126956410
+
 andrempiva arroba gmail ponto com
 
-## Como colocar o site no ar
+## Orientações de como colocar o site no ar
 
 * Fazer uma cópia do arquivo `.env.example` com o nome `.env`
 * Criar um banco de dados  **mysql** ou **pgsql** e um usuário com acesso a ele
@@ -28,4 +29,7 @@ php artisan key:generate
 php artisan storage:link
 ```
 
-Então é só rodar o comando `php artisan serve` que o ele hosteia o site no ip, ou configurar nginx ou apache para usar a pasta raíz.
+
+Então é só rodar o comando `php artisan serve` que o ele hosteia o site no ip, ou configurar nginx ou apache para usar a pasta raíz do site.
+
+........
