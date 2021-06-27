@@ -35,7 +35,7 @@ Route::post('settings/password', [UserController::class, 'passwordUpdate'])->nam
 
 Route::middleware(['auth'])->prefix('ownlist')->name('ownlist.')->group(function () {
     Route::get('add/{story}', [OwnlistController::class, 'add'])->name('add');
-    Route::get('listAs/{story}', [OwnlistController::class, 'listAs'])->name('listAs');
+    Route::get('listar/{story:slug}', [OwnlistController::class, 'listAs'])->name('list-as');
     Route::post('update/{story}', [OwnlistController::class, 'update'])->name('update');
     Route::get('remove/{story}', [OwnlistController::class, 'remove'])->name('remove');
 });

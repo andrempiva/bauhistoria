@@ -23,6 +23,10 @@ class CreateStoriesTable extends Migration
             $table->string('full_title')->nullable();
             // slug used for the url on the website
             $table->string('slug')->unique();
+            // description / synopsys
+            $table->text('description')->nullable();
+            // link (temporary)
+            $table->string('link')->nullable();
             // is it a story, quest, or adventure
             $table->string('type')->nullable();
             // author

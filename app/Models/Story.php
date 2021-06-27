@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Slug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,8 @@ class Story extends Model
     protected $fillable = [
         'title',
         'full_title',
+        'description',
+        'link',
         'type',
         'cover',
         'fandom',
@@ -37,9 +40,9 @@ class Story extends Model
     ];
 
     protected $visible = [
-        'title', 'full_title', 'type', 'fandom', 'story_status', 'words',
+        'title', 'full_title', 'type', 'fandom', 'story_status', 'words', 'description',
         'chapters', 'locked_at', 'story_created_at', 'story_updated_at',
-        'created_at', 'updated_at',
+        'created_at', 'updated_at', 'link',
 
         'score',
     ];
@@ -68,6 +71,15 @@ class Story extends Model
         if ($this->author_id && $this->author->slug === Str::slug($val)) return;
         $author = Author::firstOrCreateWithSlug($val);
         $this->author()->associate($author);
+    }
+
+    public function getCreatedDateAttribute()
+    {
+        return !$this->story_created_at ? null : $this->story_created_at->toDateString();
+    }
+    public function getUpdatedDateAttribute()
+    {
+        return !$this->story_updated_at ? null : $this->story_updated_at->toDateString();
     }
 
     /**

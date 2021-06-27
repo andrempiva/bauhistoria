@@ -91,15 +91,31 @@
                         <div class="flex items-center place-content-evenly">
                             @auth
                                 @if($user->isStoryListed($story->id))
-                                    @php($storyListedAs = $user->getListedStatusOf($story->id))
+                                    @php($listed = $user->getListedStatusOf($story->id))
+                                    @switch($listed)
+                                        @case('reading')
+                                            <x-ownlist.reading-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @case('completed')
+                                            <x-ownlist.completed-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @case('on-hold')
+                                            <x-ownlist.onhold-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @case('dropped')
+                                            <x-ownlist.dropped-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @case('plan-to-read')
+                                            <x-ownlist.plantoread-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @default
 
-                                    {{--@if ($storyListedAs == true)
+                                    @endswitch
 
-                                    @else
-
-                                    @endif --}}
                                 @else
-                                    {{ __('Add') }}
+                                    <div>
+                                        <x-ownlist.add-button story="{{ $story->id }}"/>
+                                    </div>
                                 @endif
                             @endauth
 

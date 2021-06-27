@@ -41,10 +41,11 @@
                             @forelse ($stories as $story)
                             <li class="mb-2">
                                 <div class="flex">
-                                    <div class="flex-shrink-0 border border-gray-300">
+                                    <div class="flex-shrink-0 border border-gray-300 self-center">
                                         <a href="{{ route('story.show', $story->slug) }}">
-                                            <img src="{{ $story->cover ? asset($story->cover) : asset('img/noimagefound.jpg') }}"
-                                                alt="cover image" class="w-12 h-12">
+                                            <img
+                                            src="{{ $story->cover ? asset('storage/img/'. $story->cover) : asset('img/noimagefound.jpg') }}"
+                                                alt="cover image" class="max-h-12" style="max-width:48px;">
                                         </a>
                                     </div>
                                     <div class="ml-1 overflow-hidden whitespace-nowrap">

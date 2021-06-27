@@ -38,11 +38,13 @@
                 {{-- <x-story.itemlist :story="$story" :user="$user"/> --}}
                 <tr class="">
                     <td>
-                        <a href="{{ route('story.show', $story) }}"
-                                @if($story->full_title)
-                                title="{{ $story->full_title }}"
-                                @endif
-                            ><img src="{{ asset("img/60x60.png") }}" alt=""></a>
+                        <div style="max-width: 60px;max-height:60px">
+                            <a href="{{ route('story.show', $story) }}"
+                                    @if($story->full_title)
+                                    title="{{ $story->full_title }}"
+                                    @endif
+                                ><img src="{{ $story->cover ? asset('storage/img/'. $story->cover) : asset("img/60x60.png") }}" alt=""></a>
+                        </div>
                     </td>
 
                     <td>

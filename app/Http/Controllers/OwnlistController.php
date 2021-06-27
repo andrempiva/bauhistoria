@@ -27,7 +27,7 @@ class OwnlistController extends Controller
 
 		$user = auth()->user();
 		if ($user->isStoryListed($story->id)) {
-			$errorMsg = "You already have this story listed.";
+			$errorMsg = "Você já tem essa história listada.";
 			return back()->with('status', [ 'type' => 'error', 'msg' => $errorMsg ]);
 		}
 

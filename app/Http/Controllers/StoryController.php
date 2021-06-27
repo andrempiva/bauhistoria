@@ -157,13 +157,22 @@ class StoryController extends Controller
             'full_title' => 'sometimes|nullable|string',
             'fandom' => 'required|string',
             'type' => 'required|string',
-            'my_status' => 'nullable|in:complete,incomplete',
+            'story_status' => [
+                'nullable',
+                Rule::in(storyStatusList())
+            ],
             'fandom' => [
                 'nullable',
                 Rule::in(fandomList())
             ],
             'link' => 'sometimes|nullable|string',
             'is_locked' => 'sometimes',
+            'description' => 'nullable|string',
+            'words' => 'nullable|integer',
+            'chapters' => 'nullable|integer',
+            'story_created_at' => 'nullable|date',
+            'story_updated_at' => 'nullable|date',
+            'image' => 'image|nullable|max: 1999',
         ]);
 
         // logar atividade
@@ -175,6 +184,19 @@ class StoryController extends Controller
                 $story->save();
             }
         }
+
+        if ($request->hasFile('cover')) {
+            $filenameWithExt = $request->file('cover')->getClientOriginalName();// Get Filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);// Get just Extension
+            $extension = $request->file('cover')->getClientOriginalExtension();// Filename To store
+            $fileNameToStore = $filename. '_'. time().'.'.$extension;// Upload Image
+            $path = $request->file('cover')->storeAs('public/img', $fileNameToStore);
+            // dump([$filenameWithExt, $filename, $extension, $fileNameToStore]);
+        }// Else add a dummy image
+        else {
+            $fileNameToStore = 'noimagefound.jpg';
+        }
+        $story->cover = $fileNameToStore;
 
         $story->update($validated);
 

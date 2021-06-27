@@ -8,7 +8,7 @@
             {{-- side panel --}}
             <div class="max-w-min flex-grow pr-3" style="box-shadow: 19px 0 0px -18px #e5e7eb;">
                 <div class="cover-container w-32 md:w-48 lg:w-64 h-auto m-auto mb-3">
-                    <img class="" src="{{ $story->cover ? asset($story->cover) : asset('img/noimagefound.jpg') }}"
+                    <img class="" src="{{ $story->cover ? asset('storage/img/'. $story->cover) : asset('img/noimagefound.jpg') }}"
                         alt="cover image">
                 </div>
                 <div class="font-bold mb-2 border-b-2">Seu status</div>
@@ -33,7 +33,7 @@
                                         @foreach (listedStatusList() as $my_status)
                                             <option value="{{ $my_status }}"
                                                 {{ $my_status === $story['readers'][0]['listed']['my_status'] ? 'selected=selected' : '' }}>
-                                                {{ Str::ucfirst($my_status) }}{{ $my_status == $story['readers'][0]['listed']['my_status'] ? ' (Atual)' : '' }}
+                                                {{ __($my_status) }}{{ $my_status == $story['readers'][0]['listed']['my_status'] ? ' (Atual)' : '' }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -90,8 +90,8 @@
                                 {{ $story->author->name }}
                             </a>
                         </h5>
-                        <div class="ml-auto"><span class="font-semibold text-gray-500 text-sm">{{ __('História criada em') . ': ' }}</span> <span>{{ ($story->story_created_at ? $story->story_created_at : '--') }}</span></div>
-                        <div><span class="font-semibold text-gray-500 text-sm">{{ __('História atualizada em') . ': ' }}</span> <span>{{ ($story->story_updated_at ? $story->story_updated_at.', '.$story->story_updated_at->diffForHumans() : '--') }}</span></div>
+                        <div class="ml-auto"><span class="font-semibold text-gray-500 text-sm">{{ __('História criada em') . ': ' }}</span> <span class="text-xs">{{ ($story->story_created_at ? $story->createdDate : '--') }}</span></div>
+                        <div><span class="font-semibold text-gray-500 text-sm">{{ __('História atualizada em') . ': ' }}</span> <span class="text-xs">{{ ($story->story_updated_at ? $story->updatedDate.', '.$story->story_updated_at->diffForHumans() : '--') }}</span></div>
                     </div>
                 </div>
                 @if ($story['full_title'] !== null)
@@ -193,8 +193,8 @@
                 </div>
                 <div class="bg-gray-50 border border-gray-200 p-2 pt-1">
                     <h3 class="text-gray-600 text-xl font-semibold">Sinopse:</h3>
-                    @if ($story->synopsis)
-                    <div class="bg-gray-50 border border-gray-200 m-2 p-2">{{ $story->synopsis }}</div>
+                    @if ($story->description)
+                    <div class="bg-white border shadow-inner border-gray-200 m-2 p-2">{{ $story->description }}</div>
                     @else
                     <div>
                         <span>Essa história ainda não tem uma sinopse.</span>
@@ -203,10 +203,17 @@
                     @endif
                 </div>
                 <div class="p-2">
+                    @if ($story->link)
                     <h4 class="">Onde ler:</h4>
                     <ul class="pl-1 list-inside list-disc">
-                        <li>asd</li>
+                        <li><a class="text-blue-600 hover:underline" href="{{ $story->link }}">{{ $story->link }}</a></li>
                     </ul>
+                    @else
+                    <div>
+                        <span>Não temos um link para essa história.</span>
+                    </div>
+                    @endif
+
                 </div>
             </div>
 

@@ -43,7 +43,8 @@
                                         @if($story['full_title'])
                                         title="{{ $story['full_title'] }}"
                                         @endif
-                                    ><img src="{{ asset("img/60x60.png") }}" alt=""></a>
+                                    ><img class="max-h-16" style="max-width: 64px;"
+                                     src="{{ $story->cover ? asset('storage/img/'. $story->cover) : asset("img/60x60.png") }}" alt=""></a>
                                 </td>
                                 <td class="border py-1 px-4 align-middle name">
                                     <div class="font-medium text-lg"><a href="{{ route('story.show', $story) }}"

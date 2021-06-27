@@ -6,7 +6,7 @@
     </x-slot>
 
     <x-slot name="slot">
-        <form action="{{ request()->routeIs('admin.stories.edit')
+        <form enctype="multipart/form-data" action="{{ request()->routeIs('admin.stories.edit')
             ? route('admin.stories.edit', $story)
             : route('story.edit', $story->slug) }}" method="post">
             @csrf
@@ -46,7 +46,11 @@
                         </select>
                     </div>
 
-                    <x-form-item class="w-full max-w-prose" name="link_sb" autocomplete="off">Link</x-form-item>
+                    <div class="form-item w-full max-w-prose">
+                        <x-label for="link">{{ __('Link') }}</span></x-label>
+                        <input type="text" id="link" name="link" class="rounded-md shadow-sm border border-gray-300 p-1.5 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
+                            required autocomplete="off" value="{{ old('link', $story->link) }}" />
+                    </div>
                 </div>
                 <div class="w-full flex flex-wrap justify-start content-start items-start gap-6">
                     <x-label class="w-full">
@@ -55,7 +59,8 @@
                             id="description" name="description"
                             class="form-textarea mt-1 block w-full h-32 rounded-md shadow-sm border border-gray-300
                             p-1.5 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-                            rounded-br-none" spellcheck="true" autocomplete="off" maxlength="1024"></textarea>
+                            rounded-br-none" spellcheck="true" autocomplete="off" maxlength="1024"
+                            >{{ old('description', $story->description) }}</textarea>
                     </x-label>
                     <div class="form-item inline-block">
                         <x-label for="words" value="{{ __('Qtd. de Palavras') }}"/>
@@ -76,14 +81,18 @@
                         <input type="date" id="story_created_at" name="story_created_at" class="block mt-1 w-full rounded-md
                             shadow-sm border border-gray-300 p-1.5 focus:border-indigo-300 focus:ring focus:ring-indigo-200
                             focus:ring-opacity-50" autocomplete="off"
-                            value="{{ old('story_created_at', $story->story_created_at) }}" />
+                            value="{{ old('story_created_at', $story->createdDate) }}" />
                     </div>
                     <div class="form-item inline-block">
                         <x-label for="story_updated_at" value="História atualizada em"/>
                         <input type="date" id="story_updated_at" name="story_updated_at" class="block mt-1 w-full rounded-md
                             shadow-sm border border-gray-300 p-1.5 focus:border-indigo-300 focus:ring focus:ring-indigo-200
                             focus:ring-opacity-50" autocomplete="off"
-                            value="{{ old('story_updated_at', $story->story_updated_at) }}" />
+                            value="{{ old('story_updated_at', $story->updatedDate) }}" />
+                    </div>
+                    <div class="form-item inline-block">
+                        <x-label for="cover" value="Cover"/>
+                        <input type="file" name="cover" id="cover">
                     </div>
                 </div>
             </div>
