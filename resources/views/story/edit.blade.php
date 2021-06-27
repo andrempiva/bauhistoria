@@ -49,7 +49,7 @@
                     <div class="form-item w-full max-w-prose">
                         <x-label for="link">{{ __('Link') }}</span></x-label>
                         <input type="text" id="link" name="link" class="rounded-md shadow-sm border border-gray-300 p-1.5 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full"
-                            required autocomplete="off" value="{{ old('link', $story->link) }}" />
+                            autocomplete="off" value="{{ old('link', $story->link) }}" />
                     </div>
                 </div>
                 <div class="w-full flex flex-wrap justify-start content-start items-start gap-6">

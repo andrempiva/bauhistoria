@@ -73,11 +73,11 @@
                     </td>
 
                     <td class="hidden md:table-cell">
-                        <div>{{ $story->story_created_at ?? __("Unknown") }}</div>
+                        <div>{{ $story->story_created_at ? $story->createdDate : __("Unknown") }}</div>
                     </td>
 
                     <td class="hidden md:table-cell">
-                        <div>{{ $story->story_updated_at ?? __("Unknown") }}</div>
+                        <div>{{ $story->story_updated_at ? $story->updatedDate : __("Unknown") }}</div>
                     </td>
 
                     <td>
@@ -91,25 +91,33 @@
                     <td>
                         <div class="flex items-center place-content-evenly">
                             @auth
-                            @php
-                                // $hasStory = $user->isStoryListed($user->stories->where('id', $story->id));
-                                $hasStory = $user->stories->contains('id', $story->id);
-                                // $hasStory = true;
-                                // dd($hasStory);
-                                // dd($story);
-                            @endphp
-                            <x-button-link
-                                type="" class="
-                                    px-2 py-1 border rounded text-xs
-                                "
-                                href="{{ !$hasStory ? route('ownlist.add', $story->id) . '?status=reading' : route('ownlist.remove', $story->id) }}"
-                                    >
-                                @if ( !$hasStory )
-                                {{ __('Add') }}
+                                @if($user->isStoryListed($story->id))
+                                    @php($listed = $user->getListedStatusOf($story->id))
+                                    @switch($listed)
+                                        @case('reading')
+                                            <x-ownlist.reading-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @case('completed')
+                                            <x-ownlist.completed-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @case('on-hold')
+                                            <x-ownlist.onhold-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @case('dropped')
+                                            <x-ownlist.dropped-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @case('plan-to-read')
+                                            <x-ownlist.plantoread-button story="{{ $story->slug }}"/>
+                                            @break
+                                        @default
+
+                                    @endswitch
+
                                 @else
-                                {{ __('Remove') }}
+                                    <div>
+                                        <x-ownlist.add-button story="{{ $story->id }}"/>
+                                    </div>
                                 @endif
-                            </x-button-link>
                             @endauth
 
                             @guest

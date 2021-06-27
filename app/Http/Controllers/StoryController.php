@@ -74,14 +74,9 @@ class StoryController extends Controller
         // $story = Story::create($validated);
         $story = $author->stories()->create($validated);
 
-        // TODO log story creation
-        // TODO upload and set cover image
-        // TODO create story->changeCover function
-        //     have it delete previous image (if it had any) and change the cover
-
         // redirect to story page
         return redirect()->route('story.show', $story)
-            ->with('status', successMsg('Story created with success.'));
+            ->with('status', successMsg('História criada com sucesso.'));
         // return redirect()->back()->with('status', successMsg('Story created with success.'));
     }
 
@@ -186,17 +181,17 @@ class StoryController extends Controller
         }
 
         if ($request->hasFile('cover')) {
-            $filenameWithExt = $request->file('cover')->getClientOriginalName();// Get Filename
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);// Get just Extension
-            $extension = $request->file('cover')->getClientOriginalExtension();// Filename To store
-            $fileNameToStore = $filename. '_'. time().'.'.$extension;// Upload Image
+            // Get Filename
+            $filenameWithExt = $request->file('cover')->getClientOriginalName();
+            // Get just Extension
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Filename To store
+            $extension = $request->file('cover')->getClientOriginalExtension();
+            // Upload Image
+            $fileNameToStore = $filename. '_'. time().'.'.$extension;
             $path = $request->file('cover')->storeAs('public/img', $fileNameToStore);
-            // dump([$filenameWithExt, $filename, $extension, $fileNameToStore]);
-        }// Else add a dummy image
-        else {
-            $fileNameToStore = 'noimagefound.jpg';
+            $story->cover = $fileNameToStore;
         }
-        $story->cover = $fileNameToStore;
 
         $story->update($validated);
 

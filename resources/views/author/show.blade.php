@@ -62,10 +62,10 @@
                             <div>{{ trans_choice('story.chapters', $story->chapters) }}</div>
                         </td>
                         <td class="text-center">
-                            <div>{{ $story->story_created_at ?? __("Unknown") }}</div>
+                            <div>{{ $story->story_created_at ? $story->createdDate : __("Unknown") }}</div>
                         </td>
                         <td class="text-center">
-                            <div>{{ $story->story_updated_at ?? __("Unknown") }}</div>
+                            <div>{{ $story->story_updated_at ? $story->updatedDate : __("Unknown") }}</div>
                         </td>
                         <td class="text-center">
                             @if($story->score > 0)
