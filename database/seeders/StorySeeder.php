@@ -14,11 +14,6 @@ class StorySeeder extends Seeder
      */
     public function run()
     {
-        Story::create([
-            'title' => 'A Cloudy Path',
-            'author' => 'LacksCreativity',
-            'fandom' => 'worm',
-        ]);
-
+        //
     }
 }

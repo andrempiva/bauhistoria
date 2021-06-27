@@ -7,6 +7,7 @@
                 <div>
                     Ordernar por: <select class="py-0" name="sort_by" id="sort_by">
                         <option value="id">ID</option>
+                        <option value="alpha" {{ request()->get('sort_by') == 'alpha' ? 'selected=selected' : '' }}>Alfabética</option>
                         <option value="story_qty" {{ request()->get('sort_by') == 'story_qty' ? 'selected=selected' : '' }}>Qtd de Histórias</option>
                         <option value="updated" {{ request()->get('sort_by') == 'updated' ? 'selected=selected' : '' }}>Atualizado</option>
                     </select>

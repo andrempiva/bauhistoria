@@ -79,6 +79,7 @@ Route::prefix('admin')->middleware(['admin'])->name('admin.')->group(function() 
         Route::post('{tag}/edit', [AdminController::class, 'tagsUpdate'])->name('update');
         Route::delete('{tag}', [AdminController::class, 'tagsDestroy'])->name('destroy');
         // Route::get('{tag}', [AdminController::class, 'tagsShow'])->name('show');
+        Route::delete('{tag}/{story}', [AdminController::class, 'tagsRemove'])->name('remove');
     });
 });
 
